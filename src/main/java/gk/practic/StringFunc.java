@@ -12,19 +12,20 @@ public class StringFunc {
 
     //Power Set of String
     public List<String> findPowerSetOfString(String str) {
-        List<String> objects = new ArrayList<>();
-        findPowerSetOfString(str, 0, "", objects);
-        return objects;
+        List<String> superset = new ArrayList<>();
+        findPowerSetOfString(str, 0, "", superset);
+        return superset;
     }
 
-    private void findPowerSetOfString(String str, int index, String current, List<String> answers) {
-        if(index == str.length()) {
-            answers.add(current);
+    private void findPowerSetOfString(String str, int i, String current, List<String> superset) {
+        if(str.length() == i) {
+            superset.add(current);
             return;
         }
-        findPowerSetOfString(str, index+1, current + str.charAt(index), answers);
-        findPowerSetOfString(str, index+1, current, answers);
+        findPowerSetOfString(str, i+1, current + str.charAt(i), superset);
+        findPowerSetOfString(str, i+1, current, superset);
     }
+
 
     //Permutations of a String
     public boolean findPalidromicStringOrNot(String str) {
@@ -40,9 +41,38 @@ public class StringFunc {
 
     //Permutations of a String | Recursion Algorithms on Strings | Power Set of String
     public List<String> findAllPermutationsOfString(String str) {
-        List<String> objects = new ArrayList<>();
+        List<String> permutations = new ArrayList<>();
+        findAllPermutationsOfString(str, 0, str.length(), permutations);
+        return permutations;
+    }
 
-        return objects;
+    private void findAllPermutationsOfString(String str, int l, int r, List<String> permutations) {
+        if(l==r) {
+            permutations.add(str);
+            return;
+        }
+        for (int i = l; i < r; i++) {
+            str = swap(str, l, i);
+            findAllPermutationsOfString(str, l+1, r, permutations);
+            str = swap(str, l, i);
+        }
+    }
+
+    private String swap(String str, int i1, int i2) {
+        char f = str.charAt(i1);
+        char s = str.charAt(i2);
+        char[] charArray = str.toCharArray();
+        charArray[i1] = s;
+        charArray[i2] = f;
+        return new String(charArray);
+    }
+
+    @Test
+    public void testFindAllPermutationsOfString() {
+        List<String> permutations = findAllPermutationsOfString("abc");
+        assertTrue(permutations.size()==6);
+        List<String> permutations2 = findAllPermutationsOfString("aa23");
+        assertTrue(permutations2.size()==24);
     }
 
     @Test
