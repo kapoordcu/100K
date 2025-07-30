@@ -4,10 +4,33 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import static org.junit.Assert.assertTrue;
 
 public class Arrays {
+
+    public int findKthLargest(int[] arr, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int i = 0; i < arr.length; i++) {
+            heap.add(arr[i]);
+            if(heap.size() > k) {
+                heap.remove();
+            }
+        }
+        return heap.peek();
+    }
+
+    @Test
+    public void testKthLargest() {
+       int[] arr = {2, 7, 4, 0, 1, 8, 13, 9};
+       int num = findKthLargest(arr, 3);
+       assertTrue(num==8);
+        num = findKthLargest(arr, 4);
+        assertTrue(num==7);
+        num = findKthLargest(arr, 2);
+        assertTrue(num==9);
+    }
 
     public int[] sumOFSubarrayK(int[] a, int sum) {
         int[] resultIndex = new int[2];
