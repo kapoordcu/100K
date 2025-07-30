@@ -9,6 +9,60 @@ import static org.junit.Assert.assertTrue;
 
 public class Arrays {
 
+    public int calculateStockProfit(int[] arr) {
+        int minSoFar = Integer.MAX_VALUE;
+        int profitMax = Integer.MIN_VALUE;
+        for (int i = 0; i < arr.length-1; i++) {
+            minSoFar = Math.min(minSoFar, arr[i]);
+            profitMax = Math.max(profitMax, arr[i] - minSoFar);
+        }
+        return profitMax;
+    }
+    public int calculateStockProfitWithSpace(int[] arr) {
+        int profit = 0;
+        int[] maxArrayProfit = new int[arr.length];
+        maxArrayProfit[arr.length - 1] = arr[arr.length - 1];
+        for (int k = arr.length - 2; k >= 0; k--) {
+           maxArrayProfit[k] = Math.max(arr[k], maxArrayProfit[k+1]);
+        }
+
+        for (int i = 0; i < arr.length - 1; i++) {
+            profit = Math.max(profit,maxArrayProfit[i] - arr[i]);
+        }
+        return profit;
+    }
+
+    @Test
+    public void singleStockProfile() {
+        int[] arr = {3,5,1,7,4,9,3};
+        int[] arr2 = {6, 7, 9, 3, 4, 1};
+        int profit = calculateStockProfit(arr);
+        assertTrue(profit==8);
+        profit = calculateStockProfit(arr2);
+        assertTrue(profit==3);
+    }
+
+    @Test
+    public void multipleStockProfile() {
+        int[] arr = {5,2,7,3,6,1,2,4};
+        int profit = calculateStockProfitMulti(arr);
+        assertTrue(profit==11);
+        int[] arr2 = {5,2,7,3,16,1,2,4};
+        profit = calculateStockProfitMulti(arr2);
+        assertTrue(profit==21);
+
+    }
+
+    private int calculateStockProfitMulti(int[] arr) {
+        int profit = 0;
+        for (int i = 1; i < arr.length; i++) {
+            if(arr[i] > arr[i-1]) {
+                profit += arr[i] - arr[i-1];
+            }
+        }
+        return profit;
+    }
+
     public int kadaneOn(int[] arr) {
         //  {-5, 4,6,-3, 4,-1};
         int maxSum = 0;
