@@ -9,6 +9,84 @@ import static org.junit.Assert.assertTrue;
 
 public class Arrays {
 
+    public int[] sumOFSubarrayK(int[] a, int sum) {
+        int[] resultIndex = new int[2];
+        int currentSum = 0;
+        Map<Integer, Integer> sumMap = new HashMap<>();
+
+        for (int i = 0; i < a.length -1; i++) {
+            currentSum += a[i];
+            if(currentSum - sum == 0) {
+                resultIndex[0] = 0;
+                resultIndex[1] = i;
+                return resultIndex;
+            }
+
+            if(sumMap.containsKey(currentSum - sum)) {
+                resultIndex[0] = sumMap.get(currentSum - sum) + 1;
+                resultIndex[1] = i;
+                return resultIndex;
+            }
+            sumMap.put(currentSum, i);
+        }
+        return resultIndex;
+    }
+
+    public int[] sumOFSubarrayKLargest(int[] a, int sum) {
+        int[] resultIndex = new int[2];
+        int currentSum = 0;
+        Map<Integer, Integer> sumMap = new HashMap<>();
+        int largest = 0;
+        for (int i = 0; i < a.length -1; i++) {
+            currentSum += a[i];
+            if(currentSum - sum == 0) {
+                if (i + 1 > largest) {
+                    largest = i + 1;
+                    resultIndex[0] = 0;
+                    resultIndex[1] = i;
+                }
+            }
+            if(sumMap.containsKey(currentSum - sum)) {
+                int start = sumMap.get(currentSum - sum) + 1;
+
+                if(i - start + 1 > largest) {
+                    largest = i - start + 1;
+                    resultIndex[0] = start;
+                    resultIndex[1] = i;
+                }
+            }
+            sumMap.put(currentSum, i);
+        }
+        return resultIndex;
+    }
+
+    public int[] largestSubarryaWIthEqual0n1(int[] a) {
+        for (int i = 0; i < a.length; i++) {
+            if(a[i] == 0) {
+                a[i] = -1;
+            }
+        }
+        int[] array = sumOFSubarrayKLargest(a, 0);
+        return array;
+
+    }
+
+    @Test
+    public void testsumOFSubarrayKLargest() {
+        int[] arr = { 0, 1, 1, 0, 1, 0, 0};
+        int[] result = largestSubarryaWIthEqual0n1(arr);
+        assertTrue(result[0]==0);
+        assertTrue(result[1]==5);
+    }
+
+    @Test
+    public void testsumOFSubarrayK() {
+        int[] arr = {10, 15, -5, 15, -10, 5};
+        int[] tapped = sumOFSubarrayK(arr, 5);
+        assertTrue(tapped[0]==3);
+        assertTrue(tapped[1]==4);
+    }
+
     public int calculateStockProfit(int[] arr) {
         int minSoFar = Integer.MAX_VALUE;
         int profitMax = Integer.MIN_VALUE;
