@@ -18,6 +18,7 @@ public class Arrays {
         }
         return profitMax;
     }
+
     public int calculateStockProfitWithSpace(int[] arr) {
         int profit = 0;
         int[] maxArrayProfit = new int[arr.length];
@@ -30,6 +31,31 @@ public class Arrays {
             profit = Math.max(profit,maxArrayProfit[i] - arr[i]);
         }
         return profit;
+    }
+
+    @Test
+    public void waterTap() {
+        int[] arr = {3,1,2,4,0,1,3,2};
+        int tapped = calculateTappedWater(arr);
+        assertTrue(tapped==8);
+    }
+
+    private int calculateTappedWater(int[] arr) {
+        int[] left = new int[arr.length];
+        int[] right = new int[arr.length];
+        left[0]=arr[0];
+        right[arr.length-1]=arr[arr.length-1];
+        for (int i = 1; i < arr.length; i++) {
+            left[i] = Math.max(arr[i], left[i-1]);
+        }
+        for (int i = arr.length - 2; i >= 0 ; i--) {
+            right[i] = Math.max(arr[i], right[i+1]);
+        }
+        int water = 0;
+        for (int i = 0; i < arr.length; i++) {
+            water += Math.min(left[i], right[i]) - arr[i];
+        }
+        return water;
     }
 
     @Test
