@@ -7,6 +7,28 @@ import static org.junit.Assert.assertTrue;
 
 public class Recursion {
 
+    public static String con(String ev) {
+        int increment = 0;
+        int decrement = 0;
+        int next = 0;
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        for(char c: ev.toCharArray()) {
+            if(c=='.') {
+                if(increment != 0) {
+                    next = count + 1;
+                } else {
+                    sb.append("0");
+                }
+
+            }
+            if(c=='P') {
+
+            }
+        }
+        return ev;
+    }
+
     public int sumOfNUsingRecur(int n) {
         if(n==1) {
             return 1;
