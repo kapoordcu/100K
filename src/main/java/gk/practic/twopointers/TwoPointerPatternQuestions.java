@@ -1,0 +1,106 @@
+package gk.practic.twopointers;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class TwoPointerPatternQuestions {
+
+    public static void main(String[] args) {
+//        int[] array = { 1, 4, 6, 9, 12};
+//        int[] indices = TwoPointerPatternQuestions.findIndicesWithSumIfNotSortedGK(array, 13);
+//        int[] indicesSorted = TwoPointerPatternQuestions.findIndicesWithSumIfSortedGK(array, 16);
+//        assert indices[0] ==1 && indices[1] ==3;
+//        assert indicesSorted[0] ==1 && indicesSorted[1] ==4;
+//
+//        int[] arrayOfDuplicates = { 1, 1, 3, 3, 3, 5, 6, 6, 6, 7, 8,8,8,8,8};
+//        int[] arrayOfDuplicatesRemoved = TwoPointerPatternQuestions.removeDuplicatesSorted(arrayOfDuplicates);
+//        assert arrayOfDuplicatesRemoved[0] == 1;
+//        assert arrayOfDuplicatesRemoved[1] == 3;
+//        assert arrayOfDuplicatesRemoved[2] == 5;
+//        assert arrayOfDuplicatesRemoved[3] == 6;
+//        assert arrayOfDuplicatesRemoved[4] == 7;
+//        assert arrayOfDuplicatesRemoved[5] == 8;
+//        int[] array2 = { 1, -4, -6, 9, -5};
+//        int[] indices2 = TwoPointerPatternQuestions.findIndicesWithSumIfNotSortedGK(array2, -9);
+//        assert indices2[0] ==1;
+//        assert indices2[1] ==4;
+//        int[] nums = {0,0,1,1,1,2,2,3,3,4};
+//        int five = TwoPointerPatternQuestions.removeDuplicates(nums);
+//        assert five == 5;
+//       String s = "A man, a plan, a canal: Panama";
+//       TwoPointerPatternQuestions.isPalindrome(s);
+    }
+
+    public static int removeDuplicates(int[] nums) {
+        int visited = nums[0];
+        int index = 1;
+        for(int i=1; i< nums.length; i++) {
+            if(nums[i] != visited) {
+                visited = nums[i];
+                nums[index] = visited;
+                index++;
+            }
+        }
+        return index;
+    }
+
+    public static boolean isPalindrome(String s) {
+    s=s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        int i=0, j=s.length()-1;
+        while(i < j) {
+            if(s.charAt(i) != s.charAt(j)) {
+                return false;
+            } else {
+                i++;
+                j--;
+            }
+        }
+        return true;
+    }
+
+    private static int[] findIndicesWithSumIfSortedGK(int[] array, int target) {
+        int[] indices = {-1, -1};
+        int i = 0;
+        int j = array.length - 1;
+
+        while (i < j) {
+            if(array[i]+array[j] == target) {
+                indices[0] = i;
+                indices[1] = j;
+                return indices;
+            }
+            if(array[i]+array[j] < target) {
+                i++;
+            }
+            if(array[i]+array[j] > target) {
+                j--;
+            }
+        }
+
+        return indices;
+    }
+
+    private static int[] findIndicesWithSumIfNotSortedGK(int[] array, int target) {
+        int[] indices = {-1, -1};
+        Map<Integer, Integer> sumSet = new HashMap<>();
+            //{ 1, 4, 6, 9, 12};
+        /*
+        1, 0
+        4, 1
+        6, 2
+        9, 3
+        12, 4
+         */
+        for (int i = 0; i < array.length; i++) {
+            if(sumSet.containsKey(target - array[i])) {
+                indices[0] = sumSet.get(target - array[i]);
+                indices[1] = i;
+                return indices;
+            }
+            else {
+                sumSet.put(array[i], i);
+            }
+        }
+        return indices;
+    }
+}
