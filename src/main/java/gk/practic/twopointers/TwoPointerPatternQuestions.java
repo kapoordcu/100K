@@ -5,6 +5,15 @@ import java.util.Map;
 
 public class TwoPointerPatternQuestions {
 
+static class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+//        val = x;
+//        next = null;
+    }
+}
+
     public static void main(String[] args) {
 //        int[] array = { 1, 4, 6, 9, 12};
 //        int[] indices = TwoPointerPatternQuestions.findIndicesWithSumIfNotSortedGK(array, 13);
@@ -29,6 +38,50 @@ public class TwoPointerPatternQuestions {
 //        assert five == 5;
 //       String s = "A man, a plan, a canal: Panama";
 //       TwoPointerPatternQuestions.isPalindrome(s);
+//        int[] height = {1,8,6,2,5,4,8,3,7};
+//        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
+//        System.out.println(maxArea); // 49
+//        int[] height = new int[]{1, 3, 5, 6, 9, 11};
+//        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
+//        System.out.println(maxArea); // 15
+        ListNode head = new ListNode(3);
+        ListNode a = new ListNode(2);
+        ListNode b = new ListNode(0);
+        ListNode c = new ListNode(-4);
+        head.next = a;
+        a.next = b;
+        b.next = c;
+
+        System.out.println(TwoPointerPatternQuestions.hasCycle(head));
+
+    }
+
+    public static boolean hasCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static  int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+        while (left < right) {
+            int minHeight = Math.min(height[left], height[right]);
+            maxArea = Math.max(maxArea, minHeight*(right-left));
+            if(height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return maxArea;
     }
 
     public static int removeDuplicates(int[] nums) {
