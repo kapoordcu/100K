@@ -51,8 +51,8 @@ static class ListNode {
         head.next = a;
         a.next = b;
         b.next = c;
-
-        System.out.println(TwoPointerPatternQuestions.hasCycle(head));
+        c.next = a;
+        System.out.println(TwoPointerPatternQuestions.cycleBegins(head).val);
 
     }
 
@@ -68,18 +68,48 @@ static class ListNode {
         return false;
     }
 
+    public static ListNode cycleBegins(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                slow = head;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
+
+    public static ListNode middleLinkedList(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null) {
+            if(fast.next == null) {
+                return slow;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
     public static  int maxArea(int[] height) {
-        int left = 0;
-        int right = height.length - 1;
         int maxArea = 0;
+        int left = 0, right = height.length -1;
         while (left < right) {
-            int minHeight = Math.min(height[left], height[right]);
-            maxArea = Math.max(maxArea, minHeight*(right-left));
+            //1,8,6,2,5,4,8,3,7
+            int minH = Math.min(height[left], height[right]);
+            maxArea = Math.max(maxArea, minH*(right-left));
             if(height[left] < height[right]) {
                 left++;
             } else {
                 right--;
             }
+
         }
         return maxArea;
     }
