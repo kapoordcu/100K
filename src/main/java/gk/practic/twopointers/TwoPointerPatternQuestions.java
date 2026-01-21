@@ -1,7 +1,9 @@
 package gk.practic.twopointers;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class TwoPointerPatternQuestions {
 
@@ -44,17 +46,54 @@ static class ListNode {
 //        int[] height = new int[]{1, 3, 5, 6, 9, 11};
 //        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
 //        System.out.println(maxArea); // 15
-        ListNode head = new ListNode(3);
-        ListNode a = new ListNode(2);
-        ListNode b = new ListNode(0);
-        ListNode c = new ListNode(-4);
-        head.next = a;
-        a.next = b;
-        b.next = c;
-        c.next = a;
-        System.out.println(TwoPointerPatternQuestions.cycleBegins(head).val);
+//        ListNode head = new ListNode(3);
+//        ListNode a = new ListNode(2);
+//        ListNode b = new ListNode(0);
+//        ListNode c = new ListNode(-4);
+//        head.next = a;
+//        a.next = b;
+//        b.next = c;
+//        c.next = a;
+//        System.out.println(TwoPointerPatternQuestions.cycleBegins(head).val);
+//        System.out.println(TwoPointerPatternQuestions.isHappy(121));
+         System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(45));
+        System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(82));
 
     }
+
+    public static boolean isHappy(int n) {
+        int slow = squareOfDigits(n);
+        int fast = squareOfDigits(squareOfDigits(n));
+        while (fast != slow) {
+            slow = squareOfDigits(slow);
+            fast = squareOfDigits(squareOfDigits(fast));
+        }
+        return slow == 1;
+    }
+
+    public static boolean isHappyUsingSet(int n) {
+        Set<Integer> uniqueNumbers = new HashSet<>();
+
+        while (n != 1) {
+            if(uniqueNumbers.contains(n)) {
+                return false;
+            }
+            uniqueNumbers.add(n);
+            n = squareOfDigits(n);
+        }
+        return true;
+    }
+
+    public static int squareOfDigits(int n) {
+        int sum  = 0;
+        while (n > 0) {
+            int unitDigit = n % 10;
+            sum += unitDigit*unitDigit;
+            n = n/10;
+        }
+        return sum;
+    }
+
 
     public static boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
