@@ -43,8 +43,11 @@ static class ListNode {
 //        int[] height = {1,8,6,2,5,4,8,3,7};
 //        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
 //        System.out.println(maxArea); // 49
-//        int[] height = new int[]{1, 3, 5, 6, 9, 11};
-//        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
+        int[] height = new int[]{1, 3, 5, 6, 9, 11};
+        int[] heightTrapped = new int[]{0,1,0,2,1,0,1,3,2,1,2,1};
+        //int maxArea  = TwoPointerPatternQuestions.maxArea(height);
+        int maxAreaTrapped  = TwoPointerPatternQuestions.trap(heightTrapped);
+        System.out.println(maxAreaTrapped); // 6
 //        System.out.println(maxArea); // 15
 //        ListNode head = new ListNode(3);
 //        ListNode a = new ListNode(2);
@@ -56,8 +59,8 @@ static class ListNode {
 //        c.next = a;
 //        System.out.println(TwoPointerPatternQuestions.cycleBegins(head).val);
 //        System.out.println(TwoPointerPatternQuestions.isHappy(121));
-         System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(45));
-        System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(82));
+//         System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(45));
+//        System.out.println(TwoPointerPatternQuestions.isHappyUsingSet(82));
 
     }
 
@@ -151,6 +154,29 @@ static class ListNode {
 
         }
         return maxArea;
+    }
+
+    public static int trap(int[] height) {
+        int maxWaterTrap = 0;
+        int len = height.length;
+        int[] prefixMax = new int[len];
+        int[] suffixMax = new int[len];
+        prefixMax[0] = height[0];
+        suffixMax[len-1] = height[len-1];
+        for (int i = 1; i < len - 1; i++) {
+            prefixMax[i] = Math.max(height[i], prefixMax[i-1]);
+        }
+        for (int i = len -2; i >=0 ; i--) {
+            suffixMax[i] = Math.max(height[i], suffixMax[i+1]);
+        }
+        for (int i = 0; i < len - 1; i++) {
+            int leftMax = prefixMax[i];
+            int rightMax = suffixMax[i];
+            if(height[i] < leftMax  && height[i] < rightMax) {
+                maxWaterTrap += Math.min(leftMax, rightMax) - height[i];
+            }
+        }
+        return maxWaterTrap;
     }
 
     public static int removeDuplicates(int[] nums) {
