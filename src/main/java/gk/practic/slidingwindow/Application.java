@@ -17,23 +17,21 @@ public class Application {
     }
 
     public static long maximumSubarraySum(int[] nums, int k) {
-        Set<Integer> uniqueSet = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
         int left = 0;
-        int right = 0;
+        int currentSum = 0;
         int maxSum  = 0;
-        int currentLength = 0;
-        int len = nums.length -1;
-        while(right < len || left < len -k) {
-            maxSum += nums[right];
-            currentLength++;
-            if(currentLength <= k) {
-                right++;
-            } else {
-                maxSum -= nums[left];
+        for (int right = 0; right < nums.length; right++) {
+            while (set.contains(nums[right]) || set.size()==k) {
+                set.remove(nums[left]);
+                currentSum = currentSum - nums[left];
                 left++;
-                right++;
             }
-
+            currentSum += nums[right];
+            set.add(nums[right]);
+            if(set.size() == k) {
+                maxSum = Math.max(maxSum, currentSum);
+            }
         }
         return maxSum;
     }
