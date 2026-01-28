@@ -16,6 +16,23 @@ public class Application {
         System.out.println(val2);
     }
 
+    public static int lengthOfLongestSubstring(String s) {
+        int maxLength = 0;
+        int left = 0;
+        int n = s.length();
+        Set<Character> uniqueCharSet = new HashSet<>();
+
+        for (int right = 0; right < n; right++) {
+            while (uniqueCharSet.contains(s.charAt(right))) {
+                uniqueCharSet.remove(s.charAt(left));
+                left++;
+            }
+            uniqueCharSet.add(s.charAt(right));
+            maxLength = Math.max(maxLength, right-left+1);
+        }
+        return maxLength;
+    }
+    
     public static long maximumSubarraySum(int[] nums, int k) {
         Set<Integer> set = new HashSet<>();
         int left = 0;
