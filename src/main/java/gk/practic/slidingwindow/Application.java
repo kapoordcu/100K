@@ -5,15 +5,19 @@ import java.util.Set;
 
 public class Application {
     public static void main(String[] args) {
-        int[] nums = {1,5,4,2,9,9,9};
-        int k = 3;
-        long val = Application.maximumSubarraySum(nums, k);
-        System.out.println(val);
-
-        int[] nums2 = {4, 4, 4};
-        int k2 = 3;
-        long val2 = Application.maximumSubarraySum(nums2, k2);
-        System.out.println(val2);
+//        int[] nums = {1,5,4,2,9,9,9};
+//        int k = 3;
+//        long val = Application.maximumSubarraySum(nums, k);
+//        System.out.println(val);
+//
+//        int[] nums2 = {4, 4, 4};
+//        int k2 = 3;
+//        long val2 = Application.maximumSubarraySum(nums2, k2);
+//        System.out.println(val2);
+        int target = 7;
+        int[] nums = {2,3,1,2,4,3};
+        Application app = new Application();
+        System.out.println(app.minSubArrayLen(target, nums)); //2
     }
 
     public static int lengthOfLongestSubstring(String s) {
@@ -51,5 +55,22 @@ public class Application {
             }
         }
         return maxSum;
+    }
+
+
+    public int minSubArrayLen(int target, int[] nums) {
+        //{2,3,1,2,4,3};
+        int minSubLength = Integer.MAX_VALUE;
+        int left = 0;
+        int currSum = 0;
+        for (int right = 0; right < nums.length; right++) {
+            currSum += nums[right];
+            while (currSum >= target) {
+                minSubLength = Math.min(minSubLength, right - left + 1);
+                currSum -= nums[left];
+                left++;
+            }
+        }
+        return minSubLength != Integer.MAX_VALUE ? minSubLength : 0;
     }
 }
