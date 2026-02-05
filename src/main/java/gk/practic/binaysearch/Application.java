@@ -8,9 +8,13 @@ public class Application {
 //        int index = app.findIndexOfElement(nums, pivot);
 //        System.out.println(index); // -1
 //        index = app.findIndexOfElement(nums, 8);
-        int[] nums2 = {-1,0,3,5,9,12};
-        int index = app.findIndexOfElement(nums2, 2);
-        System.out.println(index); //0
+//        int[] nums2 = {-1,0,3,5,9,12};
+//        int index = app.findIndexOfElement(nums2, 2);
+//        System.out.println(index); //0
+        int[] nums = {4,5,6,7,9,1,2};
+        int target = 1;
+        System.out.println(app.search(nums, target));
+
     }
 
     private int findIndexOfElement(int[] nums, int target) {
@@ -48,5 +52,30 @@ public class Application {
             }
         }
         return false;
+    }
+
+    public int search(int[] nums, int target) {
+        //{4,5,6,7,0,1,2};
+        int left = 0;
+        int right = nums.length-1;
+        int mid = 0;
+        while (left <= right) {
+            mid = (right + left)/2;
+            if(nums[mid] == target) { return mid; }
+            else if(nums[mid] >= nums[left]) { // left side is sorted
+                if(target <= nums[mid] && target >= nums[left]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else { // right side is sorted
+                if(target >= nums[mid] && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        return -1;
     }
 }
