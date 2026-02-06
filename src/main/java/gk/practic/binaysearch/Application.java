@@ -1,5 +1,7 @@
 package gk.practic.binaysearch;
 
+import java.util.stream.IntStream;
+
 public class Application {
     public static void main(String[] args) {
         Application app = new Application();
@@ -11,9 +13,12 @@ public class Application {
 //        int[] nums2 = {-1,0,3,5,9,12};
 //        int index = app.findIndexOfElement(nums2, 2);
 //        System.out.println(index); //0
-        int[] nums = {4,5,6,7,9,1,2};
-        int target = 1;
-        System.out.println(app.search(nums, target));
+//        int[] nums = {4,5,6,7,9,1,2};
+//        int target = 1;
+//        System.out.println(app.search(nums, target));
+        int[] weights = {1,2,3,4,5,6,7,8,9,10};
+        int days = 5;
+        System.out.println(app.shipWithinDays(weights, days));
 
     }
 
@@ -77,5 +82,44 @@ public class Application {
             }
         }
         return -1;
+    }
+
+    public int shipWithinDays(int[] weights, int days) {
+        int low = maxWeightValue(weights);
+        int high = sumWeight(weights);
+        int mid = 0;
+        while (low <= high) {
+            mid = low + (high - low)/2;
+            if(canShip(weights, days, mid)) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    private boolean canShip(int[] weights, int days, int capacity) {
+        int dayCount =1;
+        int currentLoad = 0;
+        for (int w : weights) {
+            if(currentLoad + w > capacity) {
+                dayCount++;
+                currentLoad = 0;
+            }
+            currentLoad += w;
+            if(dayCount > days) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int maxWeightValue(int[] weights) {
+        return IntStream.of(weights).max().getAsInt();
+    }
+
+    private int sumWeight(int[] weights) {
+        return IntStream.of(weights).sum();
     }
 }
