@@ -4,7 +4,8 @@ public class ApplicationSorting {
     public static void main(String[] args) {
         ApplicationSorting sorting = new ApplicationSorting();
         int[] unsortedArray = {6, 2, 5, 7};
-        sorting.bubbleSort(unsortedArray);
+        //sorting.bubbleSort(unsortedArray);
+        sorting.selectionSort(unsortedArray);
         System.out.println();
     }
 
@@ -23,6 +24,22 @@ public class ApplicationSorting {
             if(!swapped) {
                 break;
             }
+        }
+    }
+
+    private void selectionSort(int[] array) {
+        int len = array.length;
+        int minIndex = 0;
+        for (int i = 0; i < len-1; i++) {
+            minIndex = i;
+            for (int j = i + 1; j < len; j++) {
+                if(array[j] < array[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            int temp = array[minIndex];
+            array[minIndex] = array[i];
+            array[i] = temp;
         }
     }
 
