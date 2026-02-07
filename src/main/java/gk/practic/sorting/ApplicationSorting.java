@@ -5,10 +5,31 @@ public class ApplicationSorting {
         ApplicationSorting sorting = new ApplicationSorting();
         int[] arr = {12, 11, 13, 5, 6};
 
-        sorting.mergeSort(arr, 0, arr.length - 1);
+        sorting.quickSort(arr, 0, arr.length - 1);
         for (Integer i: arr) {
             System.out.print(i + " ");
         }
+    }
+
+    private void quickSort(int[] arr, int left, int right) {
+        if(left < right) {
+            int pivot = placePivotPartitioned(arr, left, right);
+            quickSort(arr, left, pivot -1);
+            quickSort(arr, pivot + 1, right);
+        }
+    }
+
+    private int placePivotPartitioned(int[] arr, int left, int right) {
+        int i = left -1;
+        int pivot = arr[left];
+        for (int j = left + 1; j <= right ; j++) {
+            if(arr[j] < pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i+1, left);
+        return i+1;
     }
 
 
