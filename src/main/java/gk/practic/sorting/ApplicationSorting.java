@@ -12,23 +12,23 @@ public class ApplicationSorting {
     }
 
     private void quickSort(int[] arr, int left, int right) {
-        if(left < right) {
+        if (left < right) {
             int pivot = placePivotPartitioned(arr, left, right);
-            quickSort(arr, left, pivot -1);
-            quickSort(arr, pivot + 1, right);
+            quickSort(arr, left, pivot - 1); // Correct sorting for left subarray
+            quickSort(arr, pivot + 1, right); // Correct sorting for right subarray
         }
     }
 
-    private int placePivotPartitioned(int[] arr, int left, int right) {
-        int i = left -1;
-        int pivot = arr[left];
-        for (int j = left + 1; j <= right ; j++) {
+    private int placePivotPartitioned(int[] arr, int low, int high) {
+        int i = low -1;
+        int pivot = arr[low];
+        for (int j = low; j <= high -1 ; j++) {
             if(arr[j] < pivot) {
                 i++;
                 swap(arr, i, j);
             }
         }
-        swap(arr, i+1, left);
+        swap(arr, i+1, high);
         return i+1;
     }
 
