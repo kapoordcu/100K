@@ -3,7 +3,7 @@ package gk.practic.sorting;
 public class ApplicationSorting {
     public static void main(String[] args) {
         ApplicationSorting sorting = new ApplicationSorting();
-        int[] arr = {1, 12, 13, 5, 16};
+        int[] arr = {12, 11, 13, 5, 6, -4};
 
         sorting.quickSort(arr, 0, arr.length - 1);
         for (Integer i: arr) {
@@ -22,14 +22,15 @@ public class ApplicationSorting {
     private int placePivotPartitioned(int[] arr, int low, int high) {
         //12, 11, 13, 5, 6
         int pivot = arr[low];
-        int start = low - 1;
-        for (int i = low; i <= high; i++) {
+        int start = low;
+        for (int i = low + 1; i <= high; i++) {
             if(arr[i] < pivot) {
                 start++;
                 swap(arr, i, start);
             }
         }
-        return start + 1;
+        swap(arr, low, start);
+        return start;
     }
 
 
