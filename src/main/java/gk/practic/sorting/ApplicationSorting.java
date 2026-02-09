@@ -1,10 +1,12 @@
 package gk.practic.sorting;
 
+import java.util.Stack;
+
 public class ApplicationSorting {
     public static void main(String[] args) {
         ApplicationSorting sorting = new ApplicationSorting();
         int[] arr = {12, 11, 13, 5, 6, -4};
-
+        Stack s = null;
         sorting.quickSort(arr, 0, arr.length - 1);
         for (Integer i: arr) {
             System.out.print(i + " ");
