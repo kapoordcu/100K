@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 public class ApplicationStack {
     public static void main(String[] args) {
         ApplicationStack stack = new ApplicationStack();
+
 //        String s = "()[]{}";
 //        System.out.println(stack.isValid(s)); // true
 //        s = "(]";
@@ -19,6 +20,7 @@ public class ApplicationStack {
         String output = "/home/user/Pictures";
         String answer = stack.simplifyPath(path);
     }
+
 
 
     public String simplifyPath(String path) {
