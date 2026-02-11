@@ -6,13 +6,45 @@ public class HeapApplication {
 
     public static void main(String[] args) {
         int[] arr = {24, 16, 18, 11, 14, 15, 10};
+        int[] arr2 = {10, 30, 50, 20, 35, 15};
         HeapApplication application = new HeapApplication();
-        int[] a = application.insertInMaxHeap(arr,20);
-       for (Integer s: a) {
-           System.out.print(s + " ");
-       }
-       application.removeFromMaxHeap(a);
+//        int len = arr2.length;
+//        for (int i = len/2 ; i >=0 ; i--) {
+//            application.heapify(arr2, len, i);
+//        }
+//        int[] a = application.insertInMaxHeap(arr,20);
+//       for (Integer s: a) {
+//           System.out.print(s + " ");
+//       }
+//       application.removeFromMaxHeap(a);
+        application.heapSort(arr, arr.length);
     }
+
+    public void heapSort(int[] arr, int n) {
+        for (int i = n-1; i >=0 ; i--) {
+            swapArrayNumbers(arr, i, 0);
+            heapify(arr, i -1, 0);
+        }
+    }
+
+
+    public void heapify(int[] arr, int n, int i) {
+        int left = 2*i+1;
+        int right = 2*i+2;
+        int largest = i;
+        int len = arr.length;
+        if(left < len && arr[largest] < arr[left]) {
+            largest = left;
+        }
+        if(right < len && arr[largest] < arr[right]) {
+            largest = right;
+        }
+        if(largest != i) {
+            swapArrayNumbers(arr, largest, i);
+            heapify(arr, n, largest);
+        }
+    }
+
 
     public int[] insertInMaxHeap(int[] arr, int val) {
         int[] newArray;
