@@ -5,8 +5,9 @@ import java.util.Arrays;
 public class HeapApplication {
 
     public static void main(String[] args) {
-        int[] arr = {24, 16, 18, 11, 14, 15, 10};
-        int[] arr2 = {10, 30, 50, 20, 35, 15};
+//        int[] arr = {24, 16, 18, 11, 14, 15, 10};
+        int[] arr = {10, 30, 50, 20, 35, 15};
+        int[] miniArray = {20, 10, 35};
         HeapApplication application = new HeapApplication();
 //        int len = arr2.length;
 //        for (int i = len/2 ; i >=0 ; i--) {
@@ -17,34 +18,43 @@ public class HeapApplication {
 //           System.out.print(s + " ");
 //       }
 //       application.removeFromMaxHeap(a);
+        //application.printInHeapSort(arr, arr.length);
         application.heapSort(arr, arr.length);
+        for (int i: arr) {
+            System.out.print(i + " ");
+        }
     }
 
-    public void heapSort(int[] arr, int n) {
-        for (int i = n-1; i >=0 ; i--) {
+    private void heapSort(int[] arr, int len) {
+        printInHeapSort(arr, len);
+        for (int i = len-1; i >0 ; i--) {
             swapArrayNumbers(arr, i, 0);
-            heapify(arr, i -1, 0);
+            heapify(arr, len -1, 0);
         }
     }
 
 
-    public void heapify(int[] arr, int n, int i) {
-        int left = 2*i+1;
-        int right = 2*i+2;
+    private void printInHeapSort(int[] arr, int length) {
+        for (int i = length/2; i >=0 ; i--) {
+            heapify(arr, length, i);
+        }
+    }
+
+    public void heapify(int[] arr, int len, int i) {
         int largest = i;
-        int len = arr.length;
-        if(left < len && arr[largest] < arr[left]) {
+        int left = 2*i+1;
+        int right=2*i+2;
+        if(left < len && arr[left] > arr[largest]) {
             largest = left;
         }
-        if(right < len && arr[largest] < arr[right]) {
+        if(right < len && arr[right] > arr[largest]) {
             largest = right;
         }
         if(largest != i) {
-            swapArrayNumbers(arr, largest, i);
-            heapify(arr, n, largest);
+            swapArrayNumbers(arr, i, largest);
+            heapify(arr, len, largest);
         }
     }
-
 
     public int[] insertInMaxHeap(int[] arr, int val) {
         int[] newArray;
