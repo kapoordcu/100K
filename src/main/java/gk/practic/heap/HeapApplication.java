@@ -2,13 +2,61 @@ package gk.practic.heap;
 
 import java.util.*;
 
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
 public class HeapApplication {
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists == null || lists.length == 0) {
+            return null;
+        }
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));
+
+        for (ListNode node: lists) {
+            if(node != null) {
+                minHeap.offer(node);
+            }
+        }
+
+        ListNode result = new ListNode(0);
+        ListNode current = result;
+        while (!minHeap.isEmpty()) {
+            ListNode minNode = minHeap.poll();
+            current.next = minNode;
+            current = current.next;
+            if(minNode.next != null) {
+                minHeap.offer(minNode.next);
+            }
+        }
+        return result.next;
+    }
 
     public static void main(String[] args) {
 //        int[] arr = {24, 16, 18, 11, 14, 15, 10};
 //        int[] arr = {10, 30, 50, 20, 35, 15};
 //        int[] miniArray = {20, 10, 35};
         HeapApplication application = new HeapApplication();
+        // [[1,4,5],[1,3,4],[2,6]]
+        ListNode a2 = new ListNode(5, null);
+        ListNode a1 = new ListNode(4, a2);
+        ListNode a0 = new ListNode(1, a1);
+
+        ListNode b2 = new ListNode(4, null);
+        ListNode b1 = new ListNode(3, b2);
+        ListNode b0 = new ListNode(1, b1);
+
+        ListNode c1 = new ListNode(6, null);
+        ListNode c0 = new ListNode(2, c1);
+
+        ListNode[] nodes = {a0, b0, c0};
+        ListNode listNode = application.mergeKLists(nodes);
+        System.out.println(listNode);
 //        int len = arr2.length;
 //        for (int i = len/2 ; i >=0 ; i--) {
 //            application.heapify(arr2, len, i);
@@ -23,12 +71,12 @@ public class HeapApplication {
 //        for (int i: arr) {
 //            System.out.print(i + " ");
 //        }
-       int[] nums = {1,1,1,2,2,2,3,3,3};
-       int k = 3;
-        int[] ints = application.topKFrequent(nums, k);
-        for (int i  : ints) {
-            System.out.print(i + " ");
-        }
+//       int[] nums = {1,1,1,2,2,2,3,3,3};
+//       int k = 3;
+//        int[] ints = application.topKFrequent(nums, k);
+//        for (int i  : ints) {
+//            System.out.print(i + " ");
+//        }
     }
 
 
