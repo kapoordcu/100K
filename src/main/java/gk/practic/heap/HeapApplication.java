@@ -12,6 +12,30 @@ class ListNode {
 
 public class HeapApplication {
 
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(nums1.length == 0 || nums2.length == 0 || k==0) {
+            return result;
+        }
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        for (int i = 0; i < Math.min(nums1.length, k); i++) {
+            minHeap.offer(new int[] {nums1[i] + nums2[0], i, 0});
+        }
+        while (k>0 && !minHeap.isEmpty()) {
+            int[] minPair = minHeap.poll();
+            int sum = minPair[0];
+            int i = minPair[1];
+            int j = minPair[2];
+            result.add(Arrays.asList(nums1[i], nums2[j]));
+            k--;
+            if(j + 1 < nums2.length) {
+                int newSum = nums1[i] + nums2[j+1];
+                minHeap.offer(new int[] {newSum, i, j+1});
+            }
+        }
+        return result;
+    }
+
     public ListNode mergeKLists(ListNode[] lists) {
         if(lists == null || lists.length == 0) {
             return null;
@@ -42,21 +66,26 @@ public class HeapApplication {
 //        int[] arr = {10, 30, 50, 20, 35, 15};
 //        int[] miniArray = {20, 10, 35};
         HeapApplication application = new HeapApplication();
+        int[] nums1 = {1,7,11};
+        int[] nums2 = {2,4,6};
+        int k = 3;
+        //int[][] result = {{1,2},{1,4},{1,6}};
+        List<List<Integer>> results = application.kSmallestPairs(nums1, nums2, k);
         // [[1,4,5],[1,3,4],[2,6]]
-        ListNode a2 = new ListNode(5, null);
-        ListNode a1 = new ListNode(4, a2);
-        ListNode a0 = new ListNode(1, a1);
-
-        ListNode b2 = new ListNode(4, null);
-        ListNode b1 = new ListNode(3, b2);
-        ListNode b0 = new ListNode(1, b1);
-
-        ListNode c1 = new ListNode(6, null);
-        ListNode c0 = new ListNode(2, c1);
-
-        ListNode[] nodes = {a0, b0, c0};
-        ListNode listNode = application.mergeKLists(nodes);
-        System.out.println(listNode);
+//        ListNode a2 = new ListNode(5, null);
+//        ListNode a1 = new ListNode(4, a2);
+//        ListNode a0 = new ListNode(1, a1);
+//
+//        ListNode b2 = new ListNode(4, null);
+//        ListNode b1 = new ListNode(3, b2);
+//        ListNode b0 = new ListNode(1, b1);
+//
+//        ListNode c1 = new ListNode(6, null);
+//        ListNode c0 = new ListNode(2, c1);
+//
+//        ListNode[] nodes = {a0, b0, c0};
+//        ListNode listNode = application.mergeKLists(nodes);
+//        System.out.println(listNode);
 //        int len = arr2.length;
 //        for (int i = len/2 ; i >=0 ; i--) {
 //            application.heapify(arr2, len, i);
