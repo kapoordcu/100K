@@ -1,13 +1,13 @@
 package gk.practic.heap;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class HeapApplication {
 
     public static void main(String[] args) {
 //        int[] arr = {24, 16, 18, 11, 14, 15, 10};
-        int[] arr = {10, 30, 50, 20, 35, 15};
-        int[] miniArray = {20, 10, 35};
+//        int[] arr = {10, 30, 50, 20, 35, 15};
+//        int[] miniArray = {20, 10, 35};
         HeapApplication application = new HeapApplication();
 //        int len = arr2.length;
 //        for (int i = len/2 ; i >=0 ; i--) {
@@ -19,10 +19,36 @@ public class HeapApplication {
 //       }
 //       application.removeFromMaxHeap(a);
         //application.printInHeapSort(arr, arr.length);
-        application.heapSort(arr, arr.length);
-        for (int i: arr) {
+//        application.heapSort(arr, arr.length);
+//        for (int i: arr) {
+//            System.out.print(i + " ");
+//        }
+       int[] nums = {1, 0, 0};
+       int k = 2;
+        int[] ints = application.topKFrequent(nums, k);
+        for (int i  : ints) {
             System.out.print(i + " ");
         }
+    }
+
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> mapFreq = new HashMap<>();
+        for (Integer num: nums) {
+            mapFreq.put(num, mapFreq.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparing(mapFreq::get));
+        for (Integer key: mapFreq.keySet()) {
+            queue.add(key);
+            if(queue.size() > k) {
+                queue.poll();
+            }
+        }
+        int[] result = new int[k];
+        for (int i = 0; i <= queue.size(); i++) {
+            result[i] = queue.poll();
+        }
+        return result;
     }
 
     private void heapSort(int[] arr, int len) {
