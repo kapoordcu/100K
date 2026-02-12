@@ -23,14 +23,27 @@ public class HeapApplication {
 //        for (int i: arr) {
 //            System.out.print(i + " ");
 //        }
-       int[] nums = {1, 0, 0};
-       int k = 2;
+       int[] nums = {1,1,1,2,2,2,3,3,3};
+       int k = 3;
         int[] ints = application.topKFrequent(nums, k);
         for (int i  : ints) {
             System.out.print(i + " ");
         }
     }
 
+
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                queue.add(matrix[i][j]);
+                if(queue.size() > k) {
+                    queue.poll();
+                }
+            }
+        }
+        return queue.peek();
+    }
 
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> mapFreq = new HashMap<>();
@@ -45,7 +58,7 @@ public class HeapApplication {
             }
         }
         int[] result = new int[k];
-        for (int i = 0; i <= queue.size(); i++) {
+        for (int i = 0; i < k; i++) {
             result[i] = queue.poll();
         }
         return result;
