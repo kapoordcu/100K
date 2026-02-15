@@ -171,16 +171,20 @@ public class BinaryTreeApp {
     }
 
     public void DFS(TreeNode root) {
-        if (root == null) return;
-
-        Stack<TreeNode> dfsStack = new Stack<>();
-        dfsStack.push(root);
-
-        while (!dfsStack.isEmpty()) {
-            TreeNode node = dfsStack.pop();
+        if(root == null) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();   // ← IMPORTANT
             System.out.print(node.val + " ");
-            if (node.right != null) dfsStack.push(node.right);
-            if (node.left != null) dfsStack.push(node.left);
+            if(node.right != null) {
+                stack.push(node.right);
+            }
+            if(node.left != null) {
+                stack.push(node.left);
+            }
         }
     }
 
