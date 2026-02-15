@@ -170,6 +170,44 @@ public class BinaryTreeApp {
         return best;
     }
 
+    public int sumOfLeafNodes(TreeNode root) {
+        int sum = 0;
+        if(root == null) {
+            return sum;
+        }
+        if(root.left == null && root.right == null) {
+            sum += root.val;
+        }
+        sum += sumOfLeafNodes(root.left);
+        sum += sumOfLeafNodes(root.right);
+        return sum;
+    }
+
+    public int sumOfLeftLeaves(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        int sum = 0;
+        if(root.left != null && root.left.left == null && root.left.right == null) {
+            sum += root.left.val;
+        }
+        sum += sumOfLeftLeaves(root.left);
+        sum += sumOfLeftLeaves(root.right);
+        return sum;
+    }
+
+    public TreeNode inverstSubtree(TreeNode root) {
+        if(root == null) {
+            return null;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        inverstSubtree(root.left);
+        inverstSubtree(root.right);
+        return root;
+    }
+
     public void DFS(TreeNode root) {
         if(root == null) {
             return;
@@ -271,6 +309,20 @@ public class BinaryTreeApp {
         TreeNode first1 = new TreeNode(13, second2, null);
         TreeNode root = new TreeNode(11, first0, first1);
         BinaryTreeApp app = new BinaryTreeApp();
-        app.DFS(root);
+        app.printInOrder(root);
+        System.out.println();
+        System.out.println("Sum of Leaf nodes");
+        System.out.println(app.sumOfLeftLeaves(root));
+//        app.inverstSubtree(root);
+//        System.out.println("------------");
+    }
+
+    private void printInOrder(TreeNode root) {
+        if(root == null) {
+            return;
+        }
+        printInOrder(root.left);
+        System.out.print(root.val + " ");
+        printInOrder(root.right);
     }
 }
