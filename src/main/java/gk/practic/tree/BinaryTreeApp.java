@@ -1,7 +1,5 @@
 package gk.practic.tree;
 
-import com.sun.source.tree.Tree;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -314,25 +312,19 @@ public class BinaryTreeApp {
 //                "7, 3, Average but the user experience could be better., 2023-03-05"
 //        };
 //        System.out.println(BinaryTreeApp.CodingChallenge(reviews));
-        Integer[] treeArray = { 11, 9, 13, 5, 7, 10, null };
+        TreeNode second0 = new TreeNode(5);
+        TreeNode second1 = new TreeNode(7);
+        TreeNode second2 = new TreeNode(10);
+        TreeNode first0 = new TreeNode(9, second0, second1);
+        TreeNode first1 = new TreeNode(13, second2, null);
+        TreeNode root = new TreeNode(11, first0, first1);
         BinaryTreeApp app = new BinaryTreeApp();
-        TreeNode root = app.createTree(treeArray);
-//        app.printInOrder(root);
+        app.printInOrder(root);
 //        System.out.println();
 //        System.out.println("Sum of Leaf nodes");
 //        System.out.println(app.sumOfLeftLeaves(root));
 //        app.inverstSubtree(root);
 //        System.out.println("------------");
-        app.hasPathSum(root, 34);
-    }
-
-    private TreeNode createTree(Integer[] array) {
-        if(array == null || array.length == 0) {
-            return null;
-        }
-        TreeNode root = new TreeNode(array[0]);
-
-        return root;
     }
 
     private void printInOrder(TreeNode root) {
