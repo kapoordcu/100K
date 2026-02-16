@@ -21,6 +21,8 @@ public class BinaryTreeApp {
     List<Integer> result = new ArrayList<>();
     boolean isSame = false;
     boolean isSymmetric = false;
+    boolean balanced = true;
+
     public List<Integer> postorderTraversal(TreeNode root) {
         if(root == null) {
             return result;
@@ -291,6 +293,27 @@ public class BinaryTreeApp {
 //        }
 //    }
 
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) {
+            return true;
+        }
+        int left = checkHeight(root.left);
+        int right = checkHeight(root.right);
+        if(Math.abs(left -right) > 1) {
+            return false;
+        }
+        return isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    private int checkHeight(TreeNode node) {
+        if(node == null) {
+            return 0;
+        }
+        int leftHeight = checkHeight(node.left);
+        int rightHeight = checkHeight(node.right);
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
     public boolean hasPathSum(TreeNode root, int targetSum) {
         if(root == null) { return false; }
         if(root.left == null && root.right == null ) {
@@ -319,7 +342,7 @@ public class BinaryTreeApp {
         TreeNode first1 = new TreeNode(13, second2, null);
         TreeNode root = new TreeNode(11, first0, first1);
         BinaryTreeApp app = new BinaryTreeApp();
-        app.printInOrder(root);
+        app.isBalanced(root);
 //        System.out.println();
 //        System.out.println("Sum of Leaf nodes");
 //        System.out.println(app.sumOfLeftLeaves(root));
