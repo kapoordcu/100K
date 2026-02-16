@@ -297,12 +297,10 @@ public class BinaryTreeApp {
         if(root == null) {
             return true;
         }
-        int left = checkHeight(root.left);
-        int right = checkHeight(root.right);
-        if(Math.abs(left -right) > 1) {
+        if(checkHeight(root) == -1) {
             return false;
         }
-        return isBalanced(root.left) && isBalanced(root.right);
+        return true;
     }
 
     private int checkHeight(TreeNode node) {
@@ -311,6 +309,12 @@ public class BinaryTreeApp {
         }
         int leftHeight = checkHeight(node.left);
         int rightHeight = checkHeight(node.right);
+        if(leftHeight == -1 || rightHeight == -1) {
+            return -1;
+        }
+        if(Math.abs(leftHeight-rightHeight) > 1) {
+            return -1;
+        }
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
