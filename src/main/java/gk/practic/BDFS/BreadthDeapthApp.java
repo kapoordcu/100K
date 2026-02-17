@@ -19,7 +19,33 @@ public class BreadthDeapthApp {
         TreeNode first1 = new TreeNode(13, second2, null);
         TreeNode root = new TreeNode(11, first0, first1);
         BreadthDeapthApp app = new BreadthDeapthApp();
-        app.levelOrder(root);
+        app.minDepth(root);
+    }
+
+    public int minDepth(TreeNode root) {
+        if(root == null) { return 0; }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            for(int i=0; i< queue.size(); i++) {
+                TreeNode poll = queue.poll();
+                if(poll.right == null && poll.left == null) {
+                    return depthOfTree(poll);
+                }
+                if(poll.left != null) {
+                    queue.add(poll.left);
+                }
+                if(poll.right != null) {
+                    queue.add(poll.right);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private int depthOfTree(TreeNode root) {
+        if(root == null) { return 0; }
+        return 1 + Math.max(depthOfTree(root.left), depthOfTree(root.right));
     }
 
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
@@ -47,28 +73,25 @@ public class BreadthDeapthApp {
     }
 
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if(root == null) {
-            return result;
-        }
+        List<List<Integer>> bfsList = new ArrayList<>();
+        if(root == null) { return bfsList; }
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         while(!queue.isEmpty()) {
             List<Integer> level = new ArrayList<>();
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                if(node.left != null) {
-                    queue.add(node.left);
+            for(int i=0; i< queue.size(); i++) {
+                TreeNode poll = queue.poll();
+                level.add(poll.val);
+                if(poll.left != null) {
+                    queue.add(poll.left);
                 }
-                if(node.right != null) {
-                    queue.add(node.right);
+                if(poll.right != null) {
+                    queue.add(poll.right);
                 }
-                level.add(node.val);
             }
-            result.add(level);
+            bfsList.add(level);
         }
-        return result;
+        return bfsList;
     }
 
     public void BFS(TreeNode root) {
