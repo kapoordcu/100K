@@ -19,7 +19,38 @@ public class BreadthDeapthApp {
         TreeNode first1 = new TreeNode(13, second2, null);
         TreeNode root = new TreeNode(11, first0, first1);
         BreadthDeapthApp app = new BreadthDeapthApp();
-        System.out.println(app.minDepth(root));
+        System.out.println(app.maxLevelSum(root));
+    }
+
+    public int maxLevelSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int level = 1;
+        int bestLevel = 1;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int maxSum = Integer.MIN_VALUE;
+        while (!queue.isEmpty()) {
+            int sum = 0;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode polled = queue.poll();
+                sum += polled.val;
+                if (polled.left != null) {
+                    queue.add(polled.left);
+                }
+                if (polled.right != null) {
+                    queue.add(polled.right);
+                }
+            }
+            if(maxSum < sum) {
+                maxSum = sum;
+                bestLevel = level;
+            }
+            level++;
+        }
+        return bestLevel;
     }
 
     public int minDepth(TreeNode root) {
