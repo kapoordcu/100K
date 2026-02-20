@@ -11,18 +11,20 @@ public class Dijkstra {
         Arrays.fill(distances, Integer.MAX_VALUE);
         distances[source] = 0;
         queue.offer(new Pair(source, 0));
-        nodesVisited.add(source);
+
         while (!queue.isEmpty()) {
             Pair pop = queue.poll();
+            if (nodesVisited.contains(pop.node))
+                continue;
+            nodesVisited.add(pop.node);
             List<Pair> neighbours = adj.get(pop.node);
             for (Pair pair: neighbours) {
                 int neighbour = pair.node; //1
                 if(!nodesVisited.contains(neighbour)) {
                     int neighbourDist = pair.weight; //3
-                    if(distances[neighbour] > distances[pair.node] + neighbourDist) {
+                    if(distances[neighbour] > distances[pop.node] + neighbourDist) {
                         distances[neighbour] = distances[pop.node] + neighbourDist;
                         queue.offer(new Pair(neighbour, distances[neighbour]));
-                        nodesVisited.add(neighbour);
                     }
                 }
             }
