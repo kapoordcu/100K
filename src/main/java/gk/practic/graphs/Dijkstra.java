@@ -47,17 +47,17 @@ public class Dijkstra {
         adj.get(1).add(new Pair(2, 1));
         adj.get(2).add(new Pair(1, 1));
 
-        adj.get(1).add(new Pair(3, 2));
-        adj.get(3).add(new Pair(1, 2));
+        adj.get(1).add(new Pair(3, 1));
+        adj.get(3).add(new Pair(1, 1));
 
         adj.get(2).add(new Pair(4, 4));
         adj.get(4).add(new Pair(2, 4));
 
-        adj.get(3).add(new Pair(4, 2));
-        adj.get(4).add(new Pair(3, 2));
+        adj.get(3).add(new Pair(4, 1));
+        adj.get(4).add(new Pair(3, 1));
 
         Dijkstra findD = new Dijkstra();
         int[] dists = findD.findDistanceByDijkstra(adj, 0);
-        System.out.println(Arrays.stream(dists).boxed().distinct());
+        System.out.println(Arrays.toString(dists));
     }
 }
