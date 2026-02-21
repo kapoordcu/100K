@@ -1,8 +1,6 @@
 package gk.practic.kahn;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class TopoSort {
     public static void main(String[] args) {
@@ -21,9 +19,38 @@ public class TopoSort {
         adj.get(4).add(1);
         adj.get(4).add(0);
         TopoSort sort = new TopoSort();
-        sort.topologicalUsingDFS(V, adj);
+        List<Integer> result = sort.topologicalUsingKAHN_BFS(V, adj);
+        for (int i: result) {
+            System.out.println(i + " ");
+        }
     }
 
+    List<Integer> topologicalUsingKAHN_BFS(int V, List<List<Integer>> adj) {
+        List<Integer> result = new ArrayList<>();
+        int[] inDegree = new int[V];
+        for (int i = 0; i < V; i++) {
+            for(int neighbour: adj.get(i)) {
+                inDegree[neighbour]++;
+            }
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < V; i++) {
+            if(inDegree[i]==0) {
+                queue.add(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int pop = queue.poll();
+            result.add(pop);
+            for (int neighbour: adj.get(pop)) {
+                inDegree[neighbour]--;
+                if(inDegree[neighbour]==0) {
+                    queue.add(neighbour);
+                }
+            }
+        }
+        return result;
+    }
     void topologicalUsingDFS(int V, List<List<Integer>> adj) {
         boolean[] visited = new boolean[V];
         Stack<Integer> stack = new Stack<>();
