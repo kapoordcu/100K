@@ -10,9 +10,9 @@ public class DynamicApp {
         Arrays.fill(dp,-1);
         DynamicApp dynamicApp = new DynamicApp();
         //System.out.println(dynamicApp.fibonacciBottomsUpSpaceOptimization(value));
-        int[] nums = {2,7,9,3,1};
-        System.out.println(dynamicApp.robOn2(nums));
+        int[] nums = {2,1,1,2};
         System.out.println(dynamicApp.rob(nums));
+       // System.out.println(dynamicApp.rob(nums));
     }
 
     public int fibonacciTopDown(int[] dp, int n) {
@@ -43,25 +43,41 @@ public class DynamicApp {
     }
 
     public int rob(int[] nums) {
-        return 0;
-    }
-
-    public int robOn2(int[] nums) {
-        int maxRob = 0;
         int len = nums.length;
-        for (int i = 0; i < len; i++) {
-            maxRob = Math.max(maxRob, findMaxRobFromI(nums, i));
+        if(len < 1) {
+            return 0;
         }
-        return maxRob;
+        if(len == 1) {
+            return nums[0];
+        }
+        if(len == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+        int last = 0;
+        int beforeLast = 0;
+        last = nums[len-1];
+        beforeLast = Math.max(nums[len-2], nums[len-1]);
+        for(int i=len-3;i>=0;i--) {
+            //rob
+            int costRob = nums[i] + last;
+            int skipRob = beforeLast;
+            last = beforeLast;
+            beforeLast = Math.max(costRob, skipRob);
+        }
+        return beforeLast;
     }
 
-    private int findMaxRobFromI(int[] nums, int start) {
-        int max = 0;
-        for (int i = start; i < nums.length; i+=2) {
-            if(i < nums.length) {
-                max = max + nums[i];
-            }
-        }
-        return max;
+    public int robTopDown(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp,-1);
+        return findRobStrategy(0, nums, dp);
+    }
+
+    private int findRobStrategy(int i, int[] nums, int[] dp) {
+        if(i >= nums.length) { return 0;}
+        if(dp[i] != -1) { return dp[i];}
+        int rob = nums[i] + findRobStrategy(i+2, nums, dp);
+        int skip = findRobStrategy(i+1, nums, dp);
+        return Math.max(rob,skip);
     }
 }
