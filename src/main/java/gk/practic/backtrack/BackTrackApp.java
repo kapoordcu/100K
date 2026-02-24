@@ -10,16 +10,37 @@ public class BackTrackApp {
 //        List<List<Integer>> resilt = new ArrayList<>();
         BackTrackApp app = new BackTrackApp();
 //        app.backtrackGeneric(0, numbers, curr, resilt);
+        List<List<String>> lists = app.solveNQueens(4);
 //        System.out.println(resilt);
-        int maze[][] = {
-                {1, 0, 0, 0},
-                {1, 1, 0, 1},
-                {1, 1, 0, 0},
-                {0, 1, 1, 1}
-        };
+//        int maze[][] = {
+//                {1, 0, 0, 0},
+//                {1, 1, 0, 1},
+//                {1, 1, 0, 0},
+//                {0, 1, 1, 1}
+//        };
+//
+//        List<String> allPaths = app.mazeRun(maze);
+//        System.out.println(allPaths);
+    }
 
-        List<String> allPaths = app.mazeRun(maze);
-        System.out.println(allPaths);
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> queens = new ArrayList<>();
+        int[][] directions = {
+                {-1, -1 },
+                {-1, 0 },
+                {-1, 1 },
+                {0, -1 },
+                {0, 1  },
+                {1, -1 },
+                {1, 0  },
+                {1, 1  }
+        };
+        backtrackQueen(0, 0, n, directions, queens, new ArrayList<>());
+        return queens;
+    }
+
+    private void backtrackQueen(int x, int y, int n, int[][] directions, List<List<String>> queens, ArrayList<String> current) {
+
     }
 
     private List<String> mazeRun(int[][] maze) {

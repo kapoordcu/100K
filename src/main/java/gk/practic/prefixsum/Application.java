@@ -1,5 +1,6 @@
 package gk.practic.prefixsum;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,15 +59,15 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        Application prefixSumApp = new Application();
-        int[] nums = {1,7,3,6,5,6};
-        System.out.println(prefixSumApp.pivotIndex(nums)); // 3
+//        Application prefixSumApp = new Application();
+//        int[] nums = {1,7,3,6,5,6};
+//        System.out.println(prefixSumApp.pivotIndex(nums)); // 3
         Application subarraySumApp = new Application();
         int[] nums2 = {2, 3, 5, -5, -5, 1, 4};
         System.out.println(subarraySumApp.subarraySum(nums2, 5));
-        Application subArraySum = new Application();
-        int[] nums3 = {23,2,4,6,7};
-        int k = 6;
-        System.out.println(subArraySum.checkSubarraySum(nums3, k));
+//        Application subArraySum = new Application();
+//        int[] nums3 = {23,2,4,6,7};
+//        int k = 6;
+//        System.out.println(subArraySum.checkSubarraySum(nums3, k));
     }
 }

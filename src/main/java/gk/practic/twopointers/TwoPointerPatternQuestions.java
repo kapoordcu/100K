@@ -17,6 +17,9 @@ static class ListNode {
 }
 
     public static void main(String[] args) {
+        TwoPointerPatternQuestions questions = new TwoPointerPatternQuestions();
+        int[] nums = { 2,3,1,2,4,3};
+        System.out.println(questions.minSubArrayLen(7, nums));
 //        int[] array = { 1, 4, 6, 9, 12};
 //        int[] indices = TwoPointerPatternQuestions.findIndicesWithSumIfNotSortedGK(array, 13);
 //        int[] indicesSorted = TwoPointerPatternQuestions.findIndicesWithSumIfSortedGK(array, 16);
@@ -43,11 +46,11 @@ static class ListNode {
 //        int[] height = {1,8,6,2,5,4,8,3,7};
 //        int maxArea  = TwoPointerPatternQuestions.maxArea(height);
 //        System.out.println(maxArea); // 49
-        int[] height = new int[]{1, 3, 5, 6, 9, 11};
-        int[] heightTrapped = new int[]{0,1,0,2,1,0,1,3,2,1,2,1};
-        //int maxArea  = TwoPointerPatternQuestions.maxArea(height);
-        int maxAreaTrapped  = TwoPointerPatternQuestions.trap(heightTrapped);
-        System.out.println(maxAreaTrapped); // 6
+//        int[] height = new int[]{1, 3, 5, 6, 9, 11};
+//        int[] heightTrapped = new int[]{0,1,0,2,1,0,1,3,2,1,2,1};
+//        //int maxArea  = TwoPointerPatternQuestions.maxArea(height);
+//        int maxAreaTrapped  = TwoPointerPatternQuestions.trap(heightTrapped);
+//        System.out.println(maxAreaTrapped); // 6
 //        System.out.println(maxArea); // 15
 //        ListNode head = new ListNode(3);
 //        ListNode a = new ListNode(2);
@@ -72,6 +75,22 @@ static class ListNode {
             fast = squareOfDigits(squareOfDigits(fast));
         }
         return slow == 1;
+    }
+
+    public int minSubArrayLen(int target, int[] nums) {
+    //2,3,1,2,4,3
+        int left = 0;
+        int sum = 0;
+        int min = Integer.MAX_VALUE;
+        for (int right = left; right < nums.length; right++) {
+            sum += nums[right];
+            while(sum >= target) {
+                min = Math.min(min, right - left +1);
+                sum -= nums[left];
+                left++;
+            }
+        }
+        return min;
     }
 
     public static boolean isHappyUsingSet(int n) {
@@ -177,6 +196,20 @@ static class ListNode {
             }
         }
         return maxWaterTrap;
+    }
+
+    public int removeDuplicates2(int[] nums) {
+        int i=0;
+        int j=i+1;
+        while(j<nums.length) {
+            if(nums[i]==nums[j]) {
+                j++;
+            } else {
+                nums[i+1]=nums[j];
+                i = i+1;
+            }
+        }
+        return i+1;
     }
 
     public static int removeDuplicates(int[] nums) {
