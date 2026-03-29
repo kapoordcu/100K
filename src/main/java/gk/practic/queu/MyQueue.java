@@ -58,7 +58,23 @@ public class MyQueue {
         MyQueue queue = new MyQueue();
         //System.out.println(queue.findKthLargest(arr, 2));
         System.out.println(queue.topKFrequent(arr, 2));
+        int[][] matrix = {{1,5,9},{10,11,13},{12,13,15}};
+        int k = 6;
+        int kth = queue.kthSmallest(matrix, k);
+        System.out.println(kth);
+    }
 
+    public int kthSmallest(int[][] matrix, int k) {
+        Queue<Integer> maxheapQueue = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                maxheapQueue.add(matrix[i][j]);
+                if(maxheapQueue.size() > k) {
+                    maxheapQueue.remove();
+                }
+            }
+        }
+        return maxheapQueue.peek();
     }
 
     public int[] topKFrequent(int[] nums, int k) {
@@ -74,8 +90,9 @@ public class MyQueue {
                 queue.remove();
             }
         }
-        for (int i = 0; i <= queue.size(); i++) {
-            topK[i] = queue.poll();
+        int i = 0;
+        while (!queue.isEmpty()) {
+            topK[i++] = queue.poll();
         }
         return topK;
     }

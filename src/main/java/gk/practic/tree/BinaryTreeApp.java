@@ -1,6 +1,7 @@
 package gk.practic.tree;
 
 import gk.practic.TreeNode;
+import gk.practic.thread.account.TestBankAccount;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -172,6 +173,24 @@ public class BinaryTreeApp {
         sum += sumOfLeafNodes(root.left);
         sum += sumOfLeafNodes(root.right);
         return sum;
+    }
+
+    public boolean isSymmetricN(TreeNode root) {
+        if(root == null) {
+            return true;
+        }
+        return isMirrorN(root.left, root.right);
+    }
+
+    private boolean isMirrorN(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+
+        if (left == null || right == null) return false;
+
+        if (left.val != right.val) return false;
+
+        return isMirrorN(left.left, right.right) &&
+                isMirrorN(left.right, right.left);
     }
 
     public int sumOfLeftLeaves(TreeNode root) {
