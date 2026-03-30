@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class ApplicationStack {
+
     public static void main(String[] args) {
         ApplicationStack stack = new ApplicationStack();
 
@@ -16,35 +17,32 @@ public class ApplicationStack {
 //        int[] nums1 = {4,1,2};
 //        int[] nums2 = {1,3,4,2, 6};
 //        stack.nextGreaterElement(nums1, nums2);
-        String path = "/.../a/../b/c/../d/./";
-        String output = "/home/user/Pictures";
-        String answer = stack.simplifyPath(path);
+        String path = "/home/user/Documents/../Pictures";
+        ApplicationStack stackApp = new ApplicationStack();
+        String val= stackApp.simplifyPath(path);
+        System.out.println(val);
     }
 
-
-
     public String simplifyPath(String path) {
+        String[] bits = path.split("/");
+        //"/home/user/Documents/../Pictures";
         Stack<String> stack = new Stack<>();
-        String[] dirs = path.split("/");
-        //     "/.../a/../b/c/../d/./";
-        for(String dir: dirs) {
-            if(dir.equals("") || dir.equals(".")) {
+        for (String bit: bits) {
+            if(bit.equals(".")) {
                 continue;
+            } else if(bit.equals("..") && !stack.isEmpty()) {
+                stack.pop();
+            } else if(!bit.isEmpty()) {
+                stack.push(bit);
             }
-            if(dir.equals("..")) {
-                if(!stack.isEmpty()) {stack.pop(); }
-            } else {
-                stack.push(dir);
-            }
         }
-        if(stack.isEmpty()) {
-            return "/";
+        StringBuilder result = new StringBuilder();
+        result.append("/");
+        for(String val: stack) {
+            result.append(val);
+            result.append("/");
         }
-        StringBuilder builder = new StringBuilder();
-        for (String p: stack) {
-            builder.append("/").append(p);
-        }
-        return builder.toString();
+        return result.toString();
     }
     
     public boolean isValid(String s) {
@@ -73,11 +71,8 @@ public class ApplicationStack {
             }
             stack.push(nums2[i]);
         }
-        while (!stack.isEmpty()) {
-            map.put(stack.pop(), -1);
-        }
         for (int i = 0; i < nums1.length; i++) {
-            result[i] = map.get(nums1[i]);
+            result[i] = map.getOrDefault(nums1[i], -1);
         }
         return result;
     }
