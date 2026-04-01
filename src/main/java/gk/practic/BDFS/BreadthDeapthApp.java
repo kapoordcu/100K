@@ -3,10 +3,7 @@ package gk.practic.BDFS;
 
 import gk.practic.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class BreadthDeapthApp {
 
@@ -123,6 +120,67 @@ public class BreadthDeapthApp {
             bfsList.add(level);
         }
         return bfsList;
+    }
+
+    public int depthMin(TreeNode root) {
+        if(root == null) { return 0; }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int depth = 1;
+        while(!queue.isEmpty()) {
+            for(int i=0; i< queue.size(); i++) {
+                TreeNode poll = queue.poll();
+                if(poll.left == null && poll.right == null) {
+                    return depth;
+                }
+                if(poll.left != null) {
+                    queue.add(poll.left);
+                }
+                if(poll.right != null) {
+                    queue.add(poll.right);
+                }
+                depth++;
+            }
+
+        }
+        return depth;
+    }
+
+    public List<List<Integer>> zigzag(TreeNode root) {
+        if(root == null) {
+            return Collections.emptyList();
+        }
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean rightToLeft = false;
+        while (queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if(rightToLeft) {
+                    if(node.left != null) {
+                        queue.offer(node.left);
+                    }
+                    if(node.right != null) {
+                        queue.offer(node.right);
+                    }
+                } else {
+                    if(node.right != null) {
+                        queue.offer(node.right);
+                    }
+                    if(node.left != null) {
+                        queue.offer(node.left);
+                    }
+                }
+                rightToLeft = !rightToLeft;
+            }
+            result.add(level);
+        }
+        return result;
     }
 
     public void BFS(TreeNode root) {

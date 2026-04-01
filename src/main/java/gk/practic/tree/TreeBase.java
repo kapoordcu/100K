@@ -34,7 +34,33 @@ public class TreeBase {
     }
 
     public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root == null) {
+            return false;
+        }
+        if(root.left == null && root.right == null) {
+            if(targetSum == root.val) return true;
+            return false;
+        }
+        int nextLevelSum = targetSum-root.val;
+        return hasPathSum(root.left, nextLevelSum) || hasPathSum(root.right, nextLevelSum);
+    }
 
+    public int height(TreeNode node) {
+        if(node==null) {
+            return 0;
+        }
+        int heightL = height(node.left);
+        int heightR = height(node.right);
+        return Math.max(heightL, heightR) + 1;
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) {
+            return true;
+        }
+        int heightL = height(root.left);
+        int heightR = height(root.right);
+        if(Math.abs(heightL-heightR) > 1) return false;
+        return isBalanced(root.left) && isBalanced(root.right);
     }
 
 }
