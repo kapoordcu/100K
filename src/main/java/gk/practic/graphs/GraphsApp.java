@@ -16,9 +16,10 @@ public class GraphsApp {
 //        List<List<Integer>> adjacencyList = new ArrayList<>(V);
 //        addEdge(adjacencyList, 0, 1);
         //printAdjancyList(adjacencyList);
-        int[][] image = {{1,1,1}, {1,1,0}, {1,0,1}};
-        app.floodFillRev(image, 1, 1, 2);
-        System.out.println(image);
+        int[][] image = {{2,1,1}, {1,1,0}, {0,1,1}}; // 4
+        int[][] image2 = {{2,1,1}, {0,1,1}, {1,0,1}}; // 0
+        int result = app.orangesRottingBFS(image);
+        System.out.println(result);
 //        int[][] image = {{0, 1,0,1}, {1,1,0, 0}, {0,0,1, 1}, {0,0,0,0}};
 //        int sr = 1;
 //        int sc = 1;
@@ -31,7 +32,48 @@ public class GraphsApp {
 //        System.out.println(image);
     }
 
-    public int[][] floodFillRev(int[][] image, int sr, int sc, int color) {
+    public int orangesRottingBFS(int[][] grid) {
+        Queue<int[]> queue = new LinkedList<>();
+        int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}};
+        int fresh = 0;
+        int time = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if(grid[i][j] == 1) {
+                    fresh++;
+                } else if(grid[i][j] == 2) {
+                    queue.add(new int[]{i, j});
+                }
+            }
+        }
+        if(fresh == 0) {
+            return 0;
+        }
+        if(queue.isEmpty()) return -1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                int[] poll = queue.poll();
+                int row = poll[0];
+                int col = poll[1];
+                for (int[] dir: directions) {
+                    int newRow = row + dir[0];
+                    int newCol =  col + dir[1];
+                    if(newCol >= 0 && newRow >=0 && newCol < grid[0].length && newRow < grid.length
+                            && grid[newRow][newCol] == 1) {
+                        grid[newRow][newCol] = 2;
+                        queue.add(new int[] {newRow, newCol});
+                        fresh--;
+                    }
+                }
+                size--;
+            }
+            time++;
+        }
+        return (fresh == 0) ? time: -1;
+    }
+
+    public int[][] floodFillRevUsingDFS(int[][] image, int sr, int sc, int color) {
         dfsRev(image, sr, sc, image.length, image[0].length, image[sr][sc], color);
         return image;
     }
