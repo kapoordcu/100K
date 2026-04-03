@@ -1,12 +1,10 @@
 package gk.practic.graphs;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class GraphsApp {
     public static void main(String[] args) {
+        GraphsApp app = new GraphsApp();
         // Adjacency Matrix
 //        int V = 3;
 //        int[][] matrix = new int[V][V];
@@ -18,17 +16,40 @@ public class GraphsApp {
 //        List<List<Integer>> adjacencyList = new ArrayList<>(V);
 //        addEdge(adjacencyList, 0, 1);
         //printAdjancyList(adjacencyList);
-//        int[][] image = {{1,1,1}, {1,1,0}, {1,0,1}};
+        int[][] image = {{1,1,1}, {1,1,0}, {1,0,1}};
+        app.floodFillRev(image, 1, 1, 2);
+        System.out.println(image);
 //        int[][] image = {{0, 1,0,1}, {1,1,0, 0}, {0,0,1, 1}, {0,0,0,0}};
 //        int sr = 1;
 //        int sc = 1;
 //        int color = 2;
-        int[][] grid = {{2,1,1}, {1,1,0}, {0,1,1}};
-        GraphsApp app = new GraphsApp();
-        int time = app.orangesRotting(grid);
-        System.out.println(time);
+//        int[][] grid = {{2,1,1}, {1,1,0}, {0,1,1}};
+//        GraphsApp app = new GraphsApp();
+//        int time = app.orangesRotting(grid);
+//        System.out.println(time);
 //        app.floodFill(image, sr, sc, color);
 //        System.out.println(image);
+    }
+
+    public int[][] floodFillRev(int[][] image, int sr, int sc, int color) {
+        dfsRev(image, sr, sc, image.length, image[0].length, image[sr][sc], color);
+        return image;
+    }
+
+    private void dfsRev(int[][] image, int sr, int sc, int rows, int cols, int orginalColor, int newColor) {
+        if (sr < 0 || sc < 0 || sr >= rows || sc >= cols) {
+            return;
+        }
+        if(image[sr][sc] == newColor || image[sr][sc] != orginalColor) {
+            return;
+        }
+        if(image[sr][sc] == orginalColor) {
+            image[sr][sc] = newColor;
+        }
+        dfsRev(image, sr+1, sc, rows, cols, orginalColor, newColor);
+        dfsRev(image, sr-1, sc, rows, cols, orginalColor, newColor);
+        dfsRev(image, sr, sc-1, rows, cols, orginalColor, newColor);
+        dfsRev(image, sr, sc+1, rows, cols, orginalColor, newColor);
     }
 
     public int orangesRotting(int[][] grid) {
