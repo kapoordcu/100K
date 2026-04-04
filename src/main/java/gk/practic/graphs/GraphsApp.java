@@ -19,7 +19,7 @@ public class GraphsApp {
 //        int result = initOrangeRotting(app);
 //        System.out.println(result);
 
-         initTopoSort(app);
+         initCourseSchedule(app);
 //        int[][] image = {{0, 1,0,1}, {1,1,0, 0}, {0,0,1, 1}, {0,0,0,0}};
 //        int sr = 1;
 //        int sc = 1;
@@ -30,6 +30,16 @@ public class GraphsApp {
 //        System.out.println(time);
 //        app.floodFill(image, sr, sc, color);
 //        System.out.println(image);
+    }
+
+    private static void initCourseSchedule(GraphsApp app) {
+        int[][] preq = new int[4][];
+        // [1,0], [2,0], [3,1], [3,2]
+        preq[0] = new int[]{1,0};
+        preq[1] = new int[]{2,0};
+        preq[2] = new int[]{3,1};
+        preq[3] = new int[]{3,2};
+        app.canFinish(4, preq);
     }
 
     private static void initTopoSort(GraphsApp app) {
@@ -251,5 +261,23 @@ public class GraphsApp {
             }
         }
         stack.push(nodeLabel);
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adjList = calculateAdjList(prerequisites);
+        List<Integer> indegree = toposortInDegree(numCourses, adjList);
+        return indegree.size() == numCourses;
+    }
+
+    private List<List<Integer>> calculateAdjList(int[][] prerequisites) {
+        // [1,0], [2,0], [3,1], [3,2]
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            adjList.add(new ArrayList<>());
+        }
+        for (int[] arr: prerequisites) {
+            adjList.get(arr[1]).add(arr[0]);
+        }
+        return adjList;
     }
 }
