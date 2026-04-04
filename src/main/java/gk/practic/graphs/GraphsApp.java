@@ -16,10 +16,10 @@ public class GraphsApp {
 //        List<List<Integer>> adjacencyList = new ArrayList<>(V);
 //        addEdge(adjacencyList, 0, 1);
         //printAdjancyList(adjacencyList);
-        int[][] image = {{2,1,1}, {1,1,0}, {0,1,1}}; // 4
-        int[][] image2 = {{2,1,1}, {0,1,1}, {1,0,1}}; // 0
-        int result = app.orangesRottingBFS(image);
-        System.out.println(result);
+//        int result = initOrangeRotting(app);
+//        System.out.println(result);
+
+         initTopoSort(app);
 //        int[][] image = {{0, 1,0,1}, {1,1,0, 0}, {0,0,1, 1}, {0,0,0,0}};
 //        int sr = 1;
 //        int sc = 1;
@@ -30,6 +30,57 @@ public class GraphsApp {
 //        System.out.println(time);
 //        app.floodFill(image, sr, sc, color);
 //        System.out.println(image);
+    }
+
+    private static void initTopoSort(GraphsApp app) {
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            adjList.add(new ArrayList<>());
+        }
+        adjList.get(2).add(3);
+        adjList.get(3).add(1);
+        adjList.get(4).add(0);
+        adjList.get(4).add(1);
+        adjList.get(5).add(0);
+        adjList.get(5).add(2);
+
+        app.toposortInDegree(6, adjList);
+    }
+
+    private List<Integer> toposortInDegree(int V, List<List<Integer>> adjList) {
+        List<Integer> result = new ArrayList<>();
+        int[] indegree = calculateInDegree(V, adjList);
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < indegree.length; i++) {
+            if(indegree[i]==0) {
+                queue.offer(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int pop = queue.poll(); // 5 4
+            result.add(pop);
+            for(Integer neighbor: adjList.get(pop)) {
+                indegree[neighbor]--;
+                if(indegree[neighbor]==0) queue.offer(neighbor);
+            }
+        }
+        return result;
+    }
+
+    private int[] calculateInDegree(int V, List<List<Integer>> adjList) {
+       int[] indegree = new int[V];
+        for (int i = 0; i < adjList.size(); i++) {
+            for(Integer in: adjList.get(i)) {
+                indegree[in]++;
+            }
+        }
+        return indegree;
+    }
+
+    private static int initOrangeRotting(GraphsApp app) {
+        int[][] image = {{2,1,1}, {1,1,0}, {0,1,1}}; // 4
+        int[][] image2 = {{2,1,1}, {0,1,1}, {1,0,1}}; // 0
+        return app.orangesRottingBFS(image);
     }
 
     public int orangesRottingBFS(int[][] grid) {
@@ -177,5 +228,28 @@ public class GraphsApp {
     private static void addEdge(int[][] matrix, int from, int to) {
         matrix[from][to] = 1;
         matrix[to][from] = 1;
+    }
+
+    public void toposort(int V, List<List<Integer>> adjList) {
+        boolean[] visited = new boolean[V];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < V; i++) {
+            if(!visited[i]) {
+                dfs(i, visited, stack, adjList);
+            }
+        }
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop());
+        }
+    }
+
+    private void dfs(int nodeLabel, boolean[] visited, Stack<Integer> stack, List<List<Integer>> adjList) {
+        visited[nodeLabel] = true;
+        for(Integer neighbour: adjList.get(nodeLabel)) {
+            if(!visited[neighbour]) {
+                dfs(neighbour, visited, stack, adjList);
+            }
+        }
+        stack.push(nodeLabel);
     }
 }
