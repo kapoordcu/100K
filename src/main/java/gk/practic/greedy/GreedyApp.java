@@ -1,7 +1,5 @@
 package gk.practic.greedy;
 
-import gk.practic.Arrays;
-
 import java.util.stream.IntStream;
 
 public class GreedyApp {
@@ -11,6 +9,7 @@ public class GreedyApp {
         int end = 0;
         int ans = 0;
         for (int i = 0; i < nums.length; i++) {
+            if (i > maxJump) return -1;
             maxJump = Math.max(maxJump, nums[i]+i);
             if(maxJump >= nums.length - 1) {
                 ans++;
@@ -39,14 +38,16 @@ public class GreedyApp {
     }
 
     public static void main(String[] args) {
-        int[] nums = {2,3,1,1,4};
+        int[] nums = {2,2,1,1,4};
+        int[] numsNo = {3,2,1,0,4};
         GreedyApp greedyApp = new GreedyApp();
         //System.out.println(greedyApp.canJump(nums)); // true
-        System.out.println(greedyApp.jump(nums)); // 2
-        int[] nums2 = {3,2,1,0,4};
-        int[] gas = {1,2,3,4,5};
-        int[] cost = {3,4,5,1,2};
-        System.out.println(greedyApp.canCompleteCircuit(gas, cost));
+        //System.out.println(greedyApp.canJumpRev(nums)); // Yes
+        System.out.println(greedyApp.jump(nums)); // No
+//        int[] nums2 = {3,2,1,0,4};
+//        int[] gas = {1,2,3,4,5};
+//        int[] cost = {3,4,5,1,2};
+//        System.out.println(greedyApp.canCompleteCircuit(gas, cost));
         // System.out.println(greedyApp.canJump(nums2)); // flase
     }
 
