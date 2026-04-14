@@ -14,9 +14,29 @@ public class DynamicApp {
 //        System.out.println(dynamicApp.rob(nums));
        // System.out.println(dynamicApp.rob(nums));
         int[][] grid = {{1,3,1},{1,5,1},{4,2,1}};
-        System.out.println(dynamicApp.minPathSum(grid));
+        System.out.println(dynamicApp.minPathSumMem(grid));
     }
 
+    // {{1,3,1},
+    // {1,5,1},
+    // {4,2,1}};
+    public int minPathSumMem(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] dp = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(i==0 && j==0) {
+                    dp[i][j] =  grid[0][0];
+                } else {
+                    int top = i > 0 ? dp[i-1][j] : Integer.MAX_VALUE;
+                    int LEFT = j > 0 ? dp[i][j-1] : Integer.MAX_VALUE;
+                    dp[i][j] = grid[i][j] + Math.min(top, LEFT);
+                }
+            }
+        }
+        return dp[rows-1][cols-1];
+    }
 
     public int minPathSum(int[][] grid) {
         int rows = grid.length;
@@ -117,6 +137,7 @@ public class DynamicApp {
         }
         return beforeLast;
     }
+
 
     public int robTopDown(int[] nums) {
         int[] dp = new int[nums.length];
