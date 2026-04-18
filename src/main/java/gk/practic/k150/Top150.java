@@ -2,13 +2,26 @@ package gk.practic.k150;
 
 public class Top150 {
     public static void main(String[] args) {
-        int[] nums = {7,1,5,3,6,4};
+        int[] nums = {1, 2,3,4,5};
         Top150 app = new Top150();
-        int result = app.maxProfit(nums);
+        int result = app.maxProfitMultiple(nums);
         System.out.println(result);
     }
 
-    public int maxProfit(int[] prices) {
+    public int maxProfitMultiple(int[] prices) {
+        int len = prices.length - 1;
+        int profit = 0;
+        int buy = prices[0];
+        for (int i = 1; i <= len; i++) {
+            if(prices[i] > buy) {
+                profit += prices[i] - buy;
+            }
+            buy = prices[i];
+        }
+        return profit;
+    }
+
+    public int maxProfitSingle(int[] prices) {
         int len = prices.length - 1;
         int profit = 0;
         int buy = prices[0];
