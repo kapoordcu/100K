@@ -1,13 +1,162 @@
 package gk.practic.k150;
 
+import java.util.Arrays;
+import java.util.Map;
+
 public class Top150 {
     public static void main(String[] args) {
-        int[] nums = {1, 2,3,4,5};
+        int[] nums = {0,1,0,2,1,0,1,3,2,1,2,1};
         Top150 app = new Top150();
-        int result = app.maxProfitMultiple(nums);
-        System.out.println(result);
+        int num = app.romanToInt("MCMXCIV");
+        System.out.println(num);
     }
 
+    public int romanToInt(String s) {
+        Map<Character, Integer> romanMap = Map.of(
+                'I', 1,
+                'V', 5,
+                'X', 10,
+                'L', 50,
+                'C', 100,
+                'D', 500,
+                'M', 1000
+        );
+        int num = 0;
+        int prev = romanMap.get(s.charAt(0));
+        int next = 0;
+        for (int i = 1; i < s.length(); i++) {
+            next = romanMap.get(s.charAt(i));
+            if(next > prev) {
+                num -= prev;
+            } else {
+                num += prev;
+            }
+            prev = next;
+        }
+        num += prev;
+        return num;
+    }
+
+    public int trap(int[] height) {
+        int water = 0;
+        int n = height.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        left[0] = height[0];
+        right[n-1] = height[n-1];
+        for (int i = 1; i < n-1; i++) {
+            if(height[i] > left[i-1]) {
+                left[i] = height[i];
+            } else {
+                left[i] = left[i-1];
+            }
+        }
+        for (int i = n-2; i >=0 ; i--) {
+            if(height[i] > right[i+1]) {
+                right[i] = height[i];
+            } else {
+                right[i] = right[i+1];
+            }
+        }
+        return water;
+    }
+
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candies = new int[ratings.length];
+        Arrays.fill(candies, 1);
+        for (int i = 1; i < n; i++) {
+            if(ratings[i] > ratings[i-1]) {
+                candies[i] = candies[i-1] + 1;
+            }
+        }
+        for (int i = n-2; i >=0 ; i--) {
+            if(ratings[i] > ratings[i+1]) {
+                candies[i] = Math.max(candies[i], candies[i+1]+1);
+            }
+        }
+        return Arrays.stream(candies).sum();
+    }
+
+    public int[] productExceptSelf(int[] nums) {
+        int size = nums.length;
+        int[] prefix = new int[size];
+        int[] suffix = new int[size];
+        prefix[0] = 1;
+        suffix[size-1] = 1;
+        for (int i = 1; i < size; i++) {
+            prefix[i] = prefix[i-1]*nums[i-1];
+        }
+        for (int i = size-2; i >= 0 ; i--) {
+            suffix[i] = suffix[i+1]*nums[i+1];
+        }
+        for (int i = 0; i < size; i++) {
+            nums[i] = prefix[i]*suffix[i];
+        }
+        return nums;
+    }
+
+    public int hIndex2(int[] citations) {
+        int n = citations.length;
+        int[] buckets = new int[n+1];
+        for (int i = 0; i < n; i++) {
+            if(citations[i]>=n) {
+                buckets[n]++;
+            } else {
+                buckets[citations[i]]++;
+            }
+        }
+        int count = 0;
+        for (int i = n; i > 0; i--) {
+            count += buckets[i];
+            if(count >= i) {
+                return count;
+            }
+        }
+        return count;
+    }
+
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+        for (int i = 0; i < n; i++) {
+            if(citations[i] >= n-i) {
+                return n-i;
+            }
+        }
+        return 0;
+    }
+
+    public int jump(int[] nums) {
+        int jumps = 0;
+        int farthest = 0;
+        int end = 0;
+        int n = nums.length;
+        for (int i = 0; i < n-1; i++) {
+            farthest = Math.max(farthest, i + nums[i]);
+            if(farthest >= n-1) {
+                jumps++;
+                return jumps;
+            }
+            if(i == end) {
+                jumps++;
+                end = farthest;
+            }
+        }
+        return jumps;
+    }
+
+    public boolean canJump(int[] nums) {
+        int len = nums.length - 1;
+        int goal = len;
+        for (int i = len-1; i >=0 ; i--) {
+            if(i+nums[i] >= goal) {
+                goal = i;
+            }
+        }
+        if (goal == 0) return true;
+        return false;
+    }
     public int maxProfitMultiple(int[] prices) {
         int len = prices.length - 1;
         int profit = 0;
