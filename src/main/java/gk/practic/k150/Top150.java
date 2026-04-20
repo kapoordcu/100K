@@ -2,25 +2,62 @@ package gk.practic.k150;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Top150 {
+    Map<Character, Integer> romanMap = Map.of(
+            'I', 1,
+            'V', 5,
+            'X', 10,
+            'L', 50,
+            'C', 100,
+            'D', 500,
+            'M', 1000
+    );
+
     public static void main(String[] args) {
-        int[] nums = {0,1,0,2,1,0,1,3,2,1,2,1};
+        String[] strs = {"flower","flow","flight"};
+
         Top150 app = new Top150();
-        int num = app.romanToInt("MCMXCIV");
-        System.out.println(num);
+        String s = app.longestCommonPrefix(strs);
+        System.out.println(s);
+    }
+
+    public String longestCommonPrefix(String[] strs) {
+        if(strs == null || strs.length == 0) return "";
+        String first = strs[0];
+        int count = 0;
+        int countFinal = 0;
+        int j = 0;
+        for (int i = 1; i < strs.length; i++) {
+            for(j = 0; j < strs[i].length(); j++) {
+                if(first.charAt(j) != strs[i].charAt(j)) {
+                    break;
+                } else {
+                    count++;
+                }
+            }
+            countFinal = Math.min(count, j);
+            count = 0;
+        }
+        return first.substring(0, countFinal);
+    }
+
+    public int lengthOfLastWord(String s) {
+        s = s.trim();
+        int len = 0;
+        for (int i = s.length(); i >=0; i--) {
+            if(s.charAt(i) == ' ') {
+                break;
+            } else {
+                len++;
+            }
+        }
+        return len;
     }
 
     public int romanToInt(String s) {
-        Map<Character, Integer> romanMap = Map.of(
-                'I', 1,
-                'V', 5,
-                'X', 10,
-                'L', 50,
-                'C', 100,
-                'D', 500,
-                'M', 1000
-        );
         int num = 0;
         int prev = romanMap.get(s.charAt(0));
         int next = 0;
