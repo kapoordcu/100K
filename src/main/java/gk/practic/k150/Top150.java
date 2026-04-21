@@ -18,8 +18,41 @@ public class Top150 {
 
     public static void main(String[] args) {
         int[] nums = {2,3,1,2,4,3};
+        String s = "barfoofoobarthefoobarman";
+        String[] words = {"bar","foo","the"};
         Top150 app = new Top150();
-        System.out.println(app.lengthOfLongestSubstring("bbbbbb"));
+        System.out.println(app.findSubstring(s, words));
+    }
+
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> result = new ArrayList<>();
+        int len = s.length();
+        int w = words[0].length();
+
+        Map<String, Integer> wordMap = new HashMap<>();
+        for (String word: words) {
+            wordMap.put(word, wordMap.getOrDefault(word, 0) + 1);
+        }
+
+        //barfoofoobarthefoobarman
+        for (int i = 0; i < w; i++) {
+            Map<String, Integer> temp = new HashMap<>();
+            int count = 0;
+            for (int j=i, k=i; j + w <= len; j = j+w) {
+                String word = s.substring(j, j+w);
+                temp.put(word, temp.getOrDefault(word, 0) + 1);
+                count++;
+                if(count == w) {
+                    if(wordMap.equals(temp)) {
+                        result.add(k);
+                        temp.computeIfPresent(s.substring(k, k+w), (a, b) -> b > 1 ? b-1: null);
+                        count--;
+                        k = k+w;
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public int lengthOfLongestSubstring(String s) {
