@@ -17,10 +17,40 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        int[][] intervals = {{1,3 },{2,6 },{5,10 },{9, 15 }};
+        int[] intervals = {1,3,4,2,2};
         Top150 app = new Top150();
-        int[][] s = app.merge(intervals);
+        int s = app.findDuplicate(intervals);
         System.out.println(s);
+    }
+
+    public int findDuplicate(int[] nums) {
+        // 1,3,4,2,2
+        int slow = 0;
+        int fast = 0;
+        while (true) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if(slow==fast) {
+                break;
+            }
+        }
+        int slow2 = nums[0];
+        while (slow != slow2) {
+            slow = nums[slow];
+            slow2 = nums[slow2];
+        }
+        return slow;
+    }
+    public int findDuplicate1(int[] nums) {
+        //1,3,4,2,2
+        for (int i = 0; i < nums.length; i++) {
+            int index = Math.abs(nums[i]);
+            if(nums[index] < 0) {
+                return index;
+            }
+            nums[index] = -nums[index];
+        }
+        return -1;
     }
 
     public int[][] merge(int[][] intervals) {
