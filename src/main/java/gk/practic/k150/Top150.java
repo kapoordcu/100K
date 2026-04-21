@@ -1,6 +1,7 @@
 package gk.practic.k150;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,11 +18,26 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        String[] strs = {"flower","flow","flight"};
-
+        String haystack = "badbutsad";
+        String needle =   "sad";
         Top150 app = new Top150();
-        String s = app.longestCommonPrefix(strs);
+        int s = app.strStr(haystack, needle);
         System.out.println(s);
+    }
+
+    public int strStr(String haystack, String needle) {
+
+        for (int i = 0; i < haystack.length(); i++) {
+            int j = 0;
+            while (j< needle.length() &&
+                    needle.charAt(j) == haystack.charAt(i+j)) {
+                j++;
+            }
+            if(j == needle.length()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public String longestCommonPrefix(String[] strs) {
