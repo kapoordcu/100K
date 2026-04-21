@@ -1,10 +1,9 @@
 package gk.practic.k150;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Top150 {
     Map<Character, Integer> romanMap = Map.of(
@@ -18,11 +17,29 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        String haystack = "badbutsad";
-        String needle =   "sad";
+        int[][] intervals = {{1,3 },{2,6 },{5,10 },{9, 15 }};
         Top150 app = new Top150();
-        int s = app.strStr(haystack, needle);
+        int[][] s = app.merge(intervals);
         System.out.println(s);
+    }
+
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparing(a -> a[0]));
+        int e = 0;
+        // {{1,3 },{2,6 },{5,10 },{9, 15 }};
+        for(int[] unit : intervals) { //
+            if(unit[0] <= intervals[e][1]) {
+                intervals[e][1] = Math.max(intervals[e][1], unit[1]);
+            } else {
+                e++;
+                intervals[e][0] = unit[0];
+                intervals[e][1] = unit[1];
+            }
+        }
+        if(e==intervals.length-1) {
+            return intervals;
+        }
+        return Arrays.copyOfRange(intervals, 0, e+1);
     }
 
     public int strStr(String haystack, String needle) {
