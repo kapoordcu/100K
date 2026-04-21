@@ -17,10 +17,26 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        int[] nums = {0,1,0,3,12};
+        int[] nums = {2,3,1,2,4,3};
         Top150 app = new Top150();
-        app.moveZeroes(nums);
+        app.minSubArrayLen(7, nums);
         System.out.println();
+    }
+
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0;
+        int currentSum = 0;
+        int minLength = Integer.MAX_VALUE;
+        for (int right = 0; right < nums.length; right++) {
+            currentSum += nums[right];
+            while (currentSum >= target) {
+                minLength = Math.min(minLength, right-left+1);
+                currentSum -= nums[left];
+                left++;
+
+            }
+        }
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
     }
 
     public int uniquePaths(int m, int n) {
