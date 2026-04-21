@@ -17,10 +17,53 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        int[] intervals = {1,3,4,2,2};
+        int[] nums = {0,1,0,3,12};
         Top150 app = new Top150();
-        int s = app.findDuplicate(intervals);
-        System.out.println(s);
+        app.moveZeroes(nums);
+        System.out.println();
+    }
+
+    public int uniquePaths(int m, int n) {
+        return unique_path_1D(m, n);
+    }
+
+    private int unique_path_1D(int m, int n) {
+        int[] aboveRow = new int[n];
+        Arrays.fill(aboveRow, 1);
+        for (int i = 1; i < m; i++) {
+            int[] currentRow = new int[n];
+            currentRow[0] = 1;
+            for (int j = 1; j < n; j++) {
+                currentRow[j] = currentRow[j-1] + aboveRow[j];
+            }
+            aboveRow = currentRow;
+        }
+        return aboveRow[n-1];
+    }
+
+    private int unique_path_bottom_up(int m, int n, int[][] memo) {
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                memo[i][j] = memo[i-1][j] + memo[i][j-1];
+            }
+        }
+        return memo[m-1][n-1];
+    }
+
+    private int unique_path_recursion(int x, int y, int m, int n) {
+        if(x==m-1 && y==n-1) return 1;
+        if(x>=m || y>=n) return 0;
+        return unique_path_recursion(x, y+1, m, n) + unique_path_recursion(x+1, y, m, n);
+    }
+
+    private int unique_path_memo(int x, int y, int m, int n, int[][] memo) {
+        // top down
+        if(x==m-1 && y==n-1) return 1;
+        if(x>=m || y>=n) return 0;
+        if(memo[x][y] != -1) return memo[x][y];
+        memo[x][y] = unique_path_memo(x, y+1, m, n, memo) +
+                unique_path_memo(x+1, y, m, n, memo);
+        return memo[x][y];
     }
 
     public int findDuplicate(int[] nums) {
@@ -72,17 +115,55 @@ public class Top150 {
         return Arrays.copyOfRange(intervals, 0, e+1);
     }
 
-    public int strStr(String haystack, String needle) {
+    public void moveZeroes(int[] nums) {
+        int len = nums.length;
+        int j = len - 1;
+        int i = 0;
+        while (i < j) {
+            //Input: nums = [0,1,0,3,12]
+            if(nums[i]==0) {
+               if(nums[j] != 0) {
+                   swap(nums, i, j);
+               }
+               j--;
+            }
+            i++;
+        }
 
+
+    }
+
+    private void swap(int[] nums, int x, int y) {
+        int temp = nums[x];
+        nums[x]=nums[y];
+        nums[y]= temp;
+    }
+
+    public boolean isSubsequence(String s, String t) {
+        // String s = "abc", t = "ahbgdc";
+        int i = 0;
+        int j = 0;
+        int s1 = s.length();
+        int t1 = t.length();
+        while (s1 < t1) {
+            if(s.charAt(i) == t.charAt(j)) {
+                i++;
+            }
+            j++;
+            if(i == s1) return true;
+
+        }
+        return false;
+    }
+
+    public int substring(String haystack, String needle) {
         for (int i = 0; i < haystack.length(); i++) {
             int j = 0;
-            while (j< needle.length() &&
-                    needle.charAt(j) == haystack.charAt(i+j)) {
+            while (j<needle.length() &&
+                    haystack.charAt(i+j)==needle.charAt(j)) {
                 j++;
             }
-            if(j == needle.length()) {
-                return i;
-            }
+            if(j==needle.length()) return i;
         }
         return -1;
     }
