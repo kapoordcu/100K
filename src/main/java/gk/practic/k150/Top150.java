@@ -19,8 +19,24 @@ public class Top150 {
     public static void main(String[] args) {
         int[] nums = {2,3,1,2,4,3};
         Top150 app = new Top150();
-        app.minSubArrayLen(7, nums);
-        System.out.println();
+        System.out.println(app.lengthOfLongestSubstring("bbbbbb"));
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        //abcabcbb
+        int left = 0;
+        Set<Character> charSet = new HashSet<>();
+        int longest = Integer.MIN_VALUE;
+        for (int right = 0; right < s.length()-1; right++) {
+            char ch = s.charAt(right);
+            while (charSet.contains(ch)) {
+                charSet.remove(s.charAt(left));
+                left++;
+            }
+            charSet.add(ch);
+            longest = Math.max(longest, charSet.size());
+        }
+        return longest;
     }
 
     public int minSubArrayLen(int target, int[] nums) {
