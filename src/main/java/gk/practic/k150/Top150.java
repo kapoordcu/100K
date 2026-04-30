@@ -17,13 +17,79 @@ public class Top150 {
     );
 
     public static void main(String[] args) {
-        int[] nums = {2,3,1,2,4,3};
-        String s = "barfoofoobarthefoobarman";
-        String[] words = {"bar","foo","the"};
         Top150 app = new Top150();
-        System.out.println(app.findSubstring(s, words));
+        int[] tokens = {2,1,5,6,2,3};
+        System.out.println(app.largestRectangleArea(tokens));
     }
 
+    public int largestRectangleArea(int[] heights) {
+        if(heights.length==0) return 0;
+
+        return 0;
+    }
+
+    public String simplifyPath(String path) {
+        String[] parts = path.split("/");
+        Stack<String> sta = new Stack<>() ;
+        if(parts.length > 0) {
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                if(part.equals(".") || part.isEmpty()) {
+                    continue;
+                } else if(part.equals("..")) {
+                    sta.pop();
+                } else {
+                    sta.push(part);
+                }
+            }
+        }
+        System.out.println(sta);
+        return path;
+    }
+
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+
+        for (String s: tokens) {
+            if(isOperator(s)) {
+                Integer b = stack.pop();
+                Integer a = stack.pop();
+                switch (s) {
+                    case "+": stack.push(a + b); break;
+                    case "-": stack.push(a - b); break;
+                    case "*": stack.push(a * b); break;
+                    case "/": stack.push(a / b); break;
+                }
+
+            } else {
+                stack.push(Integer.parseInt(s));
+            }
+        }
+        return stack.pop();
+    }
+
+    private boolean isOperator(String s) {
+        return s.equals("+") || s.equals("-") ||
+                s.equals("*") || s.equals("/");
+    }
+
+    public boolean isValid(String s) {
+        //()[]{}
+        Stack<Character> sta = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(c == ')' && sta.peek() == '(') {
+                sta.pop();
+            } else if(c == ']' && sta.peek() == '[') {
+                sta.pop();
+            } else if(c == '}' && sta.peek() == '{') {
+                sta.pop();
+            } else {
+                sta.push(c);
+            }
+        }
+        return sta.isEmpty();
+    }
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> result = new ArrayList<>();
         int len = s.length();
