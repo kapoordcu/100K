@@ -18,14 +18,80 @@ public class Top150 {
 
     public static void main(String[] args) {
         Top150 app = new Top150();
-        int[] tokens = {2,1,5,6,2,3};
-        System.out.println(app.largestRectangleArea(tokens));
+        int[] tokens = {3,4,6,9,5,7,6};
+        app.largestRectangleArea(tokens);
+    }
+
+    private int[] nextSmallerElement(int[] heights) {
+        int[] nse = new int[heights.length];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = heights.length - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            nse[i] = stack.isEmpty() ? heights.length : stack.peek();
+            stack.push(i);
+        }
+        return nse;
+    }
+
+    private int[] prevSmallerElement(int[] heights) {
+        int[] pse = new int[heights.length];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < heights.length; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            pse[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+        return pse;
+    }
+
+    private int[] prevSmallerElementBF(int[] tokens) {
+        int[] pse = new int[tokens.length];
+        pse[0] = -1;  // fix
+        //{3,4,6,9,5,7,6};
+        for (int i = 1; i < tokens.length; i++) {
+            pse[i] = -1;
+            for (int j = i-1; j >= 0; j--) {
+                if(tokens[j] < tokens[i]) {
+                    pse[i] = tokens[j];
+                    break;
+                }
+            }
+        }
+        return pse;
     }
 
     public int largestRectangleArea(int[] heights) {
         if(heights.length==0) return 0;
+        int maxArea = 0;
+        Stack<Integer> stack = new Stack<>();
+        int n  = heights.length;
+        int nse = 0;
+        int pse = 0;
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                int eleIndex = stack.peek();
+                stack.pop();
+                nse = i;
+                pse = stack.isEmpty() ? -1 : stack.peek();
+                maxArea = Math.max(maxArea, heights[eleIndex] * (nse -pse -1));
+            }
+            stack.push(i);
 
-        return 0;
+        }
+        while (!stack.isEmpty()) {
+            nse = n;
+            int eleIndex = stack.peek();
+            stack.pop();
+            pse = stack.isEmpty() ? -1 : stack.peek();
+            maxArea = Math.max(maxArea, heights[eleIndex] * (nse -pse -1));
+        }
+        return maxArea;
     }
 
     public String simplifyPath(String path) {
