@@ -5,6 +5,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+class StockSpanner {
+    Stack<int[]> stack;
+    public StockSpanner() {
+        stack = new Stack<>();
+    }
+
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            span += stack.pop()[1];
+        }
+        stack.push(new int[] {price, span});
+        return span;
+    }
+    // ["StockSpanner", "next", "next", "next", "next", "next", "next", "next"]
+}
+
 public class Top150 {
     Map<Character, Integer> romanMap = Map.of(
             'I', 1,
@@ -18,8 +35,88 @@ public class Top150 {
 
     public static void main(String[] args) {
         Top150 app = new Top150();
-        int[] tokens = {3,4,6,9,5,7,6};
-        app.largestRectangleArea(tokens);
+        int[][] grind = {{1, 1, 0},
+                {0, 1, 0},
+                {0, 1, 1}};
+        int res = app.celebrity(grind);
+    }
+
+    public int celebrity(int mat[][]) {
+        // code here
+        int celebrity = -1;
+        int rows = mat.length;
+        int cols = mat[0].length;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(i!=j && (mat[i][j] == 1 && mat[j][i] == 0) || mat[i][j] == 0 && mat[j][i] == 1) {
+
+                }
+            }
+        }
+        return celebrity;
+    }
+
+    public int orangesRotting(int[][] grid) {
+        int time = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    queue.add(new int[]{i, j});
+                }
+            }
+        }
+        int[][] dirs = {
+                {0, 1},
+                {0, -1},
+                {1, 0},
+                {-1, 0}
+        };
+        while (!queue.isEmpty()) {
+            boolean rotten = false;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] poll = queue.poll();
+                for (int[] dir : dirs) {
+                    int newRow = dir[0] + poll[0];
+                    int newCol = dir[1] + poll[1];
+                    if (newRow >= 0 && newCol >= 0 && newRow < rows && newCol < cols && grid[newRow][newCol] == 1) {
+                        {
+                            grid[newRow][newCol] = 2;
+                            rotten = true;
+                            queue.add(new int[]{newRow, newCol});
+                        }
+                    }
+                }
+                if (rotten) {
+                    time++;
+                }
+            }
+
+        }
+        return time;
+    }
+
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] result = new int[n-k+1];
+        // 1,3,-1,-3,5,3,6,7
+        Deque<Integer> deque = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            while (deque.size() > 0 && deque.peekFirst() <= i-k) {
+                deque.pollFirst(); // Size K
+            }
+            while (deque.size() > 0 && nums[i] > nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offer(i);
+            if(i >= k-1) {
+                result[i-k+1] = nums[deque.peekFirst()];
+            }
+        }
+        return result;
     }
 
     private int[] nextSmallerElement(int[] heights) {
