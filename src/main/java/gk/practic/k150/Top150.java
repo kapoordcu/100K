@@ -35,8 +35,63 @@ public class Top150 {
 
     public static void main(String[] args) {
         Top150 app = new Top150();
-        int[] robber = {1,2,3,1};
-        int res = app.rob(robber);
+        int[] coins = {10, 9, 2, 5, 3, 7, 101, 18};
+        app.lengthOfLIS(coins);
+    }
+
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            int min = Integer.MAX_VALUE;
+            for(int coin: coins) {
+                if(i-coin>=0) {
+                    dp[i] = Math.min(dp[i-coin] + 1, min);
+                }
+            }
+        }
+        return dp[amount];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+
+        int max = 1;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            max = Math.max(max, dp[i]);
+        }
+
+        return max;
+    }
+
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
+        int maxLen = 0;
+        for (String word: dict) {
+            maxLen = Math.max(maxLen, word.length());
+        }
+        int n = s.length();
+        boolean[] dp = new boolean[n+1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = i-1; j >=  Math.max(0, i - maxLen) ; j--) {
+                if(dp[j] && dict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
     }
 
     public int climbStairs(int n) {
