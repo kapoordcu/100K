@@ -35,17 +35,38 @@ public class Top150 {
 
     public static void main(String[] args) {
         Top150 app = new Top150();
-        int[] coins = {10, 9, 2, 5, 3, 7, 101, 18};
-        List<List<Integer>> triangle = List.of(
-                List.of(2),
-                List.of(3,4),
-                List.of(6,5,7),
-                List.of(4,1,8,3)
-        );
-        //[[2],[],[],[]]
-        app.minimumTotal(triangle);
+        int[][] grid = {{0,0,0},{0,1,0},{0,0,0}};
+        app.uniquePathsWithObstacles(grid);
     }
 
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        return 2;
+    }
+
+
+    public int minPathSum(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] dp = new int[rows][cols];
+        dp[0][0] = grid[0][0];
+
+        for (int i = 0; i < rows; i++) {
+
+            for (int j = 0; j < cols; j++) {
+                if (i == 0 && j == 0) continue;
+                int top = Integer.MAX_VALUE;
+                int left = Integer.MAX_VALUE;
+                if(i-1 < rows && i-1>=0) {
+                   top = dp[i-1][j];
+                }
+                if(j-1 < cols && j-1>=0) {
+                    left = dp[i][j-1];
+                }
+                dp[i][j] = grid[i][j] + Math.min(top, left);
+            }
+        }
+        return dp[rows-1][cols-1];
+    }
     public int minimumTotal(List<List<Integer>> triangle) {
         int n = triangle.size();
         int dp[] = new int[n];
