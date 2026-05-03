@@ -36,7 +36,7 @@ public class Top150 {
     public static void main(String[] args) {
         Top150 app = new Top150();
         int[] coins = {10, 9, 2, 5, 3, 7, 101, 18};
-        app.lengthOfLIS(coins);
+        app.lengthOfLISBS(coins);
     }
 
     public int coinChange(int[] coins, int amount) {
@@ -54,6 +54,29 @@ public class Top150 {
         return dp[amount];
     }
 
+    public int lengthOfLISBS(int[] nums) {
+        int[] tails = new int[nums.length];
+        int size = 0;
+
+        for (int num : nums) {
+            int left = 0, right = size;
+
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (tails[mid] < num) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+
+            tails[left] = num;
+
+            if (left == size) size++;
+        }
+
+        return size;
+    }
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
