@@ -35,10 +35,32 @@ public class Top150 {
 
     public static void main(String[] args) {
         Top150 app = new Top150();
-        int[][] grind = {{1, 1, 0},
-                {0, 1, 0},
-                {0, 1, 1}};
-        int res = app.celebrity(grind);
+        int[] robber = {1,2,3,1};
+        int res = app.rob(robber);
+    }
+
+    public int climbStairs(int n) {
+        if(n <= 2) {return n; }
+        int dp[] = new int[n+1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+
+        int prev1 = nums[0];
+        int prev2 = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < n; i++) {
+            int curr = Math.max(prev1, nums[i]+prev2);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
     }
 
     public int celebrity(int mat[][]) {
